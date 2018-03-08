@@ -42,5 +42,6 @@ public class MainActivity extends BaseClass {
                 startActivity(i);
             }
         });
+
     }
 }

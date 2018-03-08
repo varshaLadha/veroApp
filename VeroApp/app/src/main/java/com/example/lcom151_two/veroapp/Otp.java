@@ -1,6 +1,8 @@
 package com.example.lcom151_two.veroapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.Call;
@@ -8,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import retrofit2.Callback;
@@ -19,11 +22,16 @@ public class Otp extends BaseClass {
     Button verify;
     int otpValue;
     String userId;
+    ImageView background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
+
+        background=(ImageView)findViewById(R.id.background);
+        Bitmap bitmap=BlurBuilder.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.background_splash));
+        background.setImageBitmap(bitmap);
 
         if(getIntent().getExtras()==null){
             Toast.makeText(this, "No otp found", Toast.LENGTH_SHORT).show();
@@ -53,14 +61,14 @@ public class Otp extends BaseClass {
     }
 
     public void verifyUser(int otp){
-        retrofit2.Call<responseModel> call = apiInterface.verifyUser(otp);
+        retrofit2.Call<responseModel> call = apiInterface.verifyUser(otp,userId);
         call.enqueue(new Callback<responseModel>() {
             @Override
             public void onResponse(retrofit2.Call<responseModel> call, Response<responseModel> response) {
                 responseModel rmodel=response.body();
                 if(rmodel.getStatus()==1){
                     //Toast.makeText(Otp.this, rmodel.getMessage()+"Valid otp", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(Otp.this,UserHome.class);
+                    Intent intent=new Intent(Otp.this,userProfile.class);
                     intent.putExtra("userId",userId);
                     startActivity(intent);
                 }else {

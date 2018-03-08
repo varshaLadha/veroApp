@@ -1,12 +1,15 @@
 package com.example.lcom151_two.veroapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import retrofit2.Call;
@@ -17,6 +20,7 @@ public class Login extends BaseClass {
 
     EditText mobile;
     Button otp,signupRedirect;
+    ImageView background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,10 @@ public class Login extends BaseClass {
 
         mobile=(EditText)findViewById(R.id.mobile);
         otp=(Button)findViewById(R.id.otp);
+        background=(ImageView)findViewById(R.id.background);
+
+        Bitmap bitmap=BlurBuilder.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.background_splash));
+        background.setImageBitmap(bitmap);
         //signupRedirect=(Button)findViewById(R.id.signupRedirect);
 
 //        signupRedirect.setOnClickListener(new View.OnClickListener() {

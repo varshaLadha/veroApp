@@ -1,11 +1,13 @@
 package com.example.lcom151_two.veroapp;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 public class BaseClass extends AppCompatActivity {
 
     ApiInterface apiInterface;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,7 +8,7 @@ import retrofit2.http.POST;
 public interface ApiInterface {
 
     @FormUrlEncoded
-    @POST("api/user")
+    @POST("api/register")
     Call<responseModel> userRegister(@Field("userId") String userId,
                              @Field("email") String email,
                              @Field("displayName") String displayName);
@@ -19,7 +19,8 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("api/verify")
-    Call<responseModel> verifyUser(@Field("otp") int otp);
+    Call<responseModel> verifyUser(@Field("otp") int otp,
+                                   @Field("userId") String userId);
 
     @FormUrlEncoded
     @POST("api/posts")
@@ -42,4 +43,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("api/posts/private")
     Call<getPostsResponseModel> getPosts(@Field("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("api/profile")
+    Call<responseModel> setProfile(@Field("userId") String userId,
+               @Field("email") String email,
+               @Field("displayName") String displayName,
+               @Field("userPhoto") String userPhoto);
 }

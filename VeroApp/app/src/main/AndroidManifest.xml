@@ -23,7 +23,13 @@
         <activity android:name=".Signup" />
         <activity android:name=".Otp" />
         <activity android:name=".timer" />
-        <activity android:name=".UserHome"></activity>
+        <activity android:name=".UserHome" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="8261ffc97b6d4d9e1baeb66b4295b43091a627b6" />
+
+        <activity android:name=".userProfile"></activity>
     </application>
 
 </manifest>
