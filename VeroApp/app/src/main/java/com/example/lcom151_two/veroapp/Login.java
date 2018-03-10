@@ -65,15 +65,20 @@ public class Login extends BaseClass {
             @Override
             public void onResponse(Call<responseModel> call, Response<responseModel> response) {
                 responseModel model=response.body();
-                if(model.getStatus()== 1){
-                    Intent intent = new Intent(Login.this,Otp.class);
-                    intent.putExtra("otpValue",model.getMessage()+"");
-                    intent.putExtra("userId", finalUserId);
-                    startActivity(intent);
-                    //Toast.makeText(Login.this, model.getMessage()+"valid mobile number", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(Login.this, model.getMessage()+" invalid number "+model.getStatus(), Toast.LENGTH_SHORT).show();
+                try{
+                    if(response.code()==200){
+                        Intent intent = new Intent(Login.this,Otp.class);
+                        intent.putExtra("otpValue",model.getMessage()+"");
+                        intent.putExtra("userId", finalUserId);
+                        startActivity(intent);
+                        //Toast.makeText(Login.this, model.getMessage()+"valid mobile number", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(Login.this, "Please Enter valid mobile no", Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override

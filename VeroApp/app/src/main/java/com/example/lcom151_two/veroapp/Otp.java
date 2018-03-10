@@ -65,14 +65,21 @@ public class Otp extends BaseClass {
         call.enqueue(new Callback<responseModel>() {
             @Override
             public void onResponse(retrofit2.Call<responseModel> call, Response<responseModel> response) {
-                responseModel rmodel=response.body();
-                if(rmodel.getStatus()==1){
-                    //Toast.makeText(Otp.this, rmodel.getMessage()+"Valid otp", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(Otp.this,userProfile.class);
-                    intent.putExtra("userId",userId);
-                    startActivity(intent);
-                }else {
-                    Toast.makeText(Otp.this, rmodel.getMessage(), Toast.LENGTH_SHORT).show();
+                try {
+                    responseModel rmodel = response.body();
+                    if (response.code() == 200) {
+                        //Toast.makeText(Otp.this, rmodel.getMessage(), Toast.LENGTH_SHORT).show();
+                        editor.putString("verified", "verified");
+                        editor.putString("userId", userId);
+                        editor.commit();
+                        Intent intent = new Intent(Otp.this, userProfile.class);
+                        startActivity(intent);
+                        finish();
+                    } else if (response.code() == 500) {
+                        Toast.makeText(Otp.this, "Otp does not match", Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(Otp.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 

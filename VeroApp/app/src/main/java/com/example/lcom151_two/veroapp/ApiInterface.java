@@ -46,8 +46,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("api/profile")
-    Call<responseModel> setProfile(@Field("userId") String userId,
+    Call<userProfileResponse> setProfile(@Field("userId") String userId,
                @Field("email") String email,
-               @Field("displayName") String displayName,
-               @Field("userPhoto") String userPhoto);
+               @Field("displayName") String displayName);
 }

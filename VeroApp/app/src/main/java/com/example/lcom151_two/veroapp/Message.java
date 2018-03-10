@@ -15,10 +15,10 @@ public class Message {
     private String postText;
     @SerializedName("postUrl")
     @Expose
-    private String postUrl;
+    private Object postUrl;
     @SerializedName("postCaption")
     @Expose
-    private String postCaption;
+    private Object postCaption;
     @SerializedName("userId")
     @Expose
     private String userId;
@@ -37,6 +37,12 @@ public class Message {
     @SerializedName("privacy")
     @Expose
     private Integer privacy;
+    @SerializedName("displayName")
+    @Expose
+    private String displayName;
+    @SerializedName("userProfilePhoto")
+    @Expose
+    private String userProfilePhoto;
 
     public Integer getPostId() {
         return postId;
@@ -62,19 +68,19 @@ public class Message {
         this.postText = postText;
     }
 
-    public String getPostUrl() {
+    public Object getPostUrl() {
         return postUrl;
     }
 
-    public void setPostUrl(String postUrl) {
+    public void setPostUrl(Object postUrl) {
         this.postUrl = postUrl;
     }
 
-    public String getPostCaption() {
+    public Object getPostCaption() {
         return postCaption;
     }
 
-    public void setPostCaption(String postCaption) {
+    public void setPostCaption(Object postCaption) {
         this.postCaption = postCaption;
     }
 
@@ -124,5 +130,21 @@ public class Message {
 
     public void setPrivacy(Integer privacy) {
         this.privacy = privacy;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getUserProfilePhoto() {
+        return userProfilePhoto;
+    }
+
+    public void setUserProfilePhoto(String userProfilePhoto) {
+        this.userProfilePhoto = userProfilePhoto;
     }
 }
