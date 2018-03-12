@@ -2,6 +2,7 @@ package com.example.lcom151_two.veroapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lcom151_two.veroapp.apiClasses.ApiClient;
+import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
+import com.example.lcom151_two.veroapp.apiClasses.postLikeResponseModel;
+import com.example.lcom151_two.veroapp.apiClasses.responseModel;
+
 import java.util.ArrayList;
+
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class postDisplayAdapter extends BaseAdapter{
 
@@ -22,6 +31,7 @@ public class postDisplayAdapter extends BaseAdapter{
     ArrayList<Integer> postId;
     SharedPreferences sp;
     String userId;
+    ApiInterface apiInterface;
 
     public postDisplayAdapter(Context context,ArrayList<String> userName,ArrayList<String> postText,ArrayList<String> cmtcnt,ArrayList<String> lkscnt,ArrayList<Integer> postId){
         this.context=context;
@@ -32,6 +42,7 @@ public class postDisplayAdapter extends BaseAdapter{
         this.postId=postId;
         sp=context.getSharedPreferences("mypref", Context.MODE_PRIVATE);
         userId=sp.getString("userId","");
+        apiInterface= ApiClient.getClient().create(ApiInterface.class);
     }
     @Override
     public int getCount() {
@@ -69,11 +80,25 @@ public class postDisplayAdapter extends BaseAdapter{
             likePost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, userId, Toast.LENGTH_SHORT).show();
                     likescnt.setText((Integer.parseInt((String) likescnt.getText())+1)+"");
                     likedpost.setVisibility(View.VISIBLE);
                     likePost.setVisibility(View.INVISIBLE);
-                    //Toast.makeText(context, likescnt.getText(), Toast.LENGTH_SHORT).show();
+
+                    retrofit2.Call<postLikeResponseModel> call=apiInterface.likePost(postId.get(position),userId);
+                    call.enqueue(new Callback<postLikeResponseModel>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<postLikeResponseModel> call, Response<postLikeResponseModel> response) {
+                            if(response.code()==200){
+                                Toast.makeText(context, "Post liked successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(retrofit2.Call<postLikeResponseModel> call, Throwable t) {
+                            Toast.makeText(context, "Problem liking post : "+t.getMessage(), Toast.LENGTH_LONG).show();
+                            Log.e("Error liking post : ",t.getMessage());
+                        }
+                    });
                 }
             });
 

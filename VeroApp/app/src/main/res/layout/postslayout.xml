@@ -26,11 +26,12 @@
 
             <TextView
                 android:id="@+id/username"
-                android:layout_width="200dp"
-                android:layout_height="65dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/userpic"
                 android:layout_toEndOf="@+id/userpic"
                 android:layout_toRightOf="@+id/userpic"
+                android:layout_centerVertical="true"
                 android:textSize="20sp"
                 android:textColor="@android:color/white"/>
 
@@ -58,10 +59,10 @@
 
         <TextView
             android:id="@+id/postText"
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/userData"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
@@ -85,7 +86,7 @@
 
             <TextView
                 android:id="@+id/commentcnt"
-                android:layout_width="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
                 android:textColor="@android:color/white"
@@ -103,7 +104,7 @@
 
             <TextView
                 android:id="@+id/likescnt"
-                android:layout_width="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"

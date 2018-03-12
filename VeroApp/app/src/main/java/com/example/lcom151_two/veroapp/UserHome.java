@@ -8,23 +8,19 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.example.lcom151_two.veroapp.fragments.NotificationFragment;
+import com.example.lcom151_two.veroapp.fragments.PostsFragment;
+import com.example.lcom151_two.veroapp.fragments.SearchFragment;
+import com.example.lcom151_two.veroapp.fragments.SettingsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class UserHome extends BaseClass {
 
-    GridView posts;
     List<String> postText;
     ImageView background;
 
@@ -33,7 +29,6 @@ public class UserHome extends BaseClass {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
-        posts=(GridView)findViewById(R.id.postsGrid);
         postText=new ArrayList<String>();
 
         if(!sp.contains("userId")){

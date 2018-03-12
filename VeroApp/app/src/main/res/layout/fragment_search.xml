@@ -2,12 +2,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lcom151_two.veroapp.SearchFragment">
+    tools:context="com.example.lcom151_two.veroapp.fragments.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/searchArea"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Search Fragment" />
+        android:layout_height="80dp">
+        <EditText
+            android:id="@+id/searchvalue"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:hint="Search by people or email"/>
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/search"
+            android:layout_toRightOf="@+id/searchvalue"
+            android:layout_toEndOf="@+id/searchvalue"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/searchList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:background="@android:color/white">
+    </GridView>
 
 </FrameLayout>

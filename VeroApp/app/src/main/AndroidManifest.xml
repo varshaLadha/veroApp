@@ -23,8 +23,8 @@
         <activity android:name=".Signup" />
         <activity android:name=".Otp" />
         <activity android:name=".timer" />
-        <activity android:name=".UserHome" />
-
+        <activity android:name=".UserHome"
+            android:configChanges="orientation"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8261ffc97b6d4d9e1baeb66b4295b43091a627b6" />

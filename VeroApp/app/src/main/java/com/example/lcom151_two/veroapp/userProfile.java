@@ -8,12 +8,13 @@ import android.provider.MediaStore;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.lcom151_two.veroapp.apiClasses.userProfileResponse;
 
 import java.io.ByteArrayOutputStream;
 

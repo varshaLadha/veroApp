@@ -1,18 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lcom151_two.veroapp.PostsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.lcom151_two.veroapp.fragments.PostsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="Post Fragment" />-->
 
     <GridView
         android:id="@+id/postsGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></GridView>
 
-</FrameLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
+        android:tint="@android:color/white"
+        android:src="@android:drawable/ic_input_add" />
+
+</android.support.design.widget.CoordinatorLayout>
