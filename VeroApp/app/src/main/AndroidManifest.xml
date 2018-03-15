@@ -3,6 +3,8 @@
     package="com.example.lcom151_two.veroapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -29,7 +31,8 @@
             android:name="io.fabric.ApiKey"
             android:value="8261ffc97b6d4d9e1baeb66b4295b43091a627b6" />
 
-        <activity android:name=".userProfile"></activity>
+        <activity android:name=".UserProfile"
+            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
     </application>
 
 </manifest>

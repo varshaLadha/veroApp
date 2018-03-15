@@ -1,22 +1,20 @@
 package com.example.lcom151_two.veroapp.fragments;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import com.example.lcom151_two.veroapp.R;
-
-import java.util.ArrayList;
+import com.example.lcom151_two.veroapp.UserProfile;
 
 public class SettingsFragment extends Fragment {
 
+    Activity context;
     public SettingsFragment() {
 
     }
@@ -26,9 +24,15 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view=inflater.inflate(R.layout.fragment_settings, container, false);
+        context=getActivity();
 
         return view;
+    }
 
+    public void onStart(){
+        super.onStart();
+        Intent intent=new Intent(context,UserProfile.class);
+        startActivity(intent);
     }
 
 }

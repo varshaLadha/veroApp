@@ -32,7 +32,7 @@ public class ImageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setImageResource(GalImages[position]);
         ((ViewPager) container).addView(imageView, 0);
         return imageView;

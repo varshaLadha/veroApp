@@ -11,6 +11,9 @@ public class searchData {
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("userId")
+    @Expose
+    private String userId;
 
     public String getDisplayName() {
         return displayName;
@@ -26,5 +29,13 @@ public class searchData {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

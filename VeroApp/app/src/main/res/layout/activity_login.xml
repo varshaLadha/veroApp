@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lcom151_two.veroapp.Login">
+    tools:context="com.example.lcom151_two.veroapp.Login"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/background"

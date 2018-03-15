@@ -1,5 +1,6 @@
 package com.example.lcom151_two.veroapp;
 
+import android.app.ActionBar;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -15,6 +17,7 @@ import com.example.lcom151_two.veroapp.fragments.NotificationFragment;
 import com.example.lcom151_two.veroapp.fragments.PostsFragment;
 import com.example.lcom151_two.veroapp.fragments.SearchFragment;
 import com.example.lcom151_two.veroapp.fragments.SettingsFragment;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ public class UserHome extends BaseClass {
 
     List<String> postText;
     ImageView background;
+    android.support.v7.app.ActionBar ab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,13 @@ public class UserHome extends BaseClass {
             startActivity(intent);
             finish();
         }else {
+            Gson gson=new Gson();
+            String object=sp.getString("userDetail","");
+            UserDataModelClass udm=gson.fromJson(object,UserDataModelClass.class);
+
+            ab=getSupportActionBar();
+            ab.setTitle(udm.displayName);
+
             background=(ImageView)findViewById(R.id.background);
             Bitmap bitmap=BlurBuilder.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.background_splash));
             background.setImageBitmap(bitmap);

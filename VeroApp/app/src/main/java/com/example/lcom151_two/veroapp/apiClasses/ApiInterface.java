@@ -1,9 +1,16 @@
 package com.example.lcom151_two.veroapp.apiClasses;
 
+import java.util.HashMap;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 
 public interface ApiInterface {
 
@@ -11,7 +18,9 @@ public interface ApiInterface {
     @POST("api/register")
     Call<responseModel> userRegister(@Field("userId") String userId,
                                      @Field("email") String email,
-                                     @Field("displayName") String displayName);
+                                     @Field("displayName") String displayName,
+                                     @Field("userStatus") String status,
+                                     @Field("uName") String uName);
 
     @FormUrlEncoded
     @POST("api/login")
@@ -24,16 +33,15 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("api/posts")
-    Call<responseModel> postComment(@Field("postType") String postType,
-                                    @Field("postText") String postText,
-                                    @Field("postUrl") String postUrl,
-                                    @Field("postCaption") String postCaption,
-                                    @Field("userId") String userId);
+    Call<responseModel> post(@Field("postType") String postType,
+                             @Field("postText") String postText,
+                             @Field("userId") String userId,
+                             @Field("privacy") String privacy);
 
     @FormUrlEncoded
     @POST("api/likes")
     Call<postLikeResponseModel> likePost(@Field("postId") int postId,
-                                 @Field("userId") String userId);
+                                         @Field("userId") String userId);
 
     @FormUrlEncoded
     @POST("api/follow")
@@ -44,11 +52,9 @@ public interface ApiInterface {
     @POST("api/posts/private")
     Call<getPostsResponseModel> getPosts(@Field("userId") String userId);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("api/profile")
-    Call<userProfileResponse> setProfile(@Field("userId") String userId,
-                                         @Field("email") String email,
-                                         @Field("displayName") String displayName);
+    Call<userProfileResponse> setProfile(@PartMap HashMap<String, RequestBody> requestBodyHashMap, @Part MultipartBody.Part file);
 
     @FormUrlEncoded
     @POST("api/search")

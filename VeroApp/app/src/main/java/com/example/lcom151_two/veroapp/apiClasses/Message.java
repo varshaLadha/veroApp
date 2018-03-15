@@ -15,10 +15,7 @@ public class Message {
     private String postText;
     @SerializedName("postUrl")
     @Expose
-    private Object postUrl;
-    @SerializedName("postCaption")
-    @Expose
-    private Object postCaption;
+    private String postUrl;
     @SerializedName("userId")
     @Expose
     private String userId;
@@ -30,13 +27,19 @@ public class Message {
     private String modifiedAt;
     @SerializedName("deletedAt")
     @Expose
-    private Object deletedAt;
+    private String deletedAt;
     @SerializedName("isDeleted")
     @Expose
     private Integer isDeleted;
     @SerializedName("privacy")
     @Expose
     private Integer privacy;
+    @SerializedName("coments")
+    @Expose
+    private Integer coments;
+    @SerializedName("likes")
+    @Expose
+    private Integer likes;
     @SerializedName("displayName")
     @Expose
     private String displayName;
@@ -68,20 +71,12 @@ public class Message {
         this.postText = postText;
     }
 
-    public Object getPostUrl() {
+    public String getPostUrl() {
         return postUrl;
     }
 
-    public void setPostUrl(Object postUrl) {
+    public void setPostUrl(String postUrl) {
         this.postUrl = postUrl;
-    }
-
-    public Object getPostCaption() {
-        return postCaption;
-    }
-
-    public void setPostCaption(Object postCaption) {
-        this.postCaption = postCaption;
     }
 
     public String getUserId() {
@@ -108,11 +103,11 @@ public class Message {
         this.modifiedAt = modifiedAt;
     }
 
-    public Object getDeletedAt() {
+    public String getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Object deletedAt) {
+    public void setDeletedAt(String deletedAt) {
         this.deletedAt = deletedAt;
     }
 
@@ -130,6 +125,22 @@ public class Message {
 
     public void setPrivacy(Integer privacy) {
         this.privacy = privacy;
+    }
+
+    public Integer getComents() {
+        return coments;
+    }
+
+    public void setComents(Integer coments) {
+        this.coments = coments;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
     }
 
     public String getDisplayName() {

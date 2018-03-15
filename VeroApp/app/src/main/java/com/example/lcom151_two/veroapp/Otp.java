@@ -52,9 +52,7 @@ public class Otp extends BaseClass {
                     Toast.makeText(Otp.this, "Please enter the OTP", Toast.LENGTH_SHORT).show();
                 }
                 else {
-//                    Toast.makeText(Otp.this, Integer.parseInt(otpinput.getText().toString())+"", Toast.LENGTH_SHORT).show();
                     verifyUser(Integer.parseInt(otpinput.getText().toString()));
-
                 }
             }
         });
@@ -68,11 +66,10 @@ public class Otp extends BaseClass {
                 try {
                     responseModel rmodel = response.body();
                     if (response.code() == 200) {
-                        //Toast.makeText(Otp.this, rmodel.getMessage(), Toast.LENGTH_SHORT).show();
                         editor.putString("verified", "verified");
                         editor.putString("userId", userId);
                         editor.commit();
-                        Intent intent = new Intent(Otp.this, userProfile.class);
+                        Intent intent = new Intent(Otp.this, UserProfile.class);
                         startActivity(intent);
                         finish();
                     } else if (response.code() == 500) {

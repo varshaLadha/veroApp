@@ -1,14 +1,11 @@
 package com.example.lcom151_two.veroapp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MainActivity extends BaseClass {
 
@@ -20,7 +17,7 @@ public class MainActivity extends BaseClass {
         setContentView(R.layout.activity_main);
 
         if(sp.contains("verified")){
-            Intent intent=new Intent(MainActivity.this,userProfile.class);
+            Intent intent=new Intent(MainActivity.this,UserProfile.class);
             startActivity(intent);
             finish();
         }

@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static String url = "http://192.168.200.53:3005";
+    public static String url = "http://10.0.2.2:3005";
     public static Retrofit retrofit=null;
 
     public static Retrofit getClient(){

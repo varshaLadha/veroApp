@@ -6,10 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.example.lcom151_two.veroapp.R;
@@ -30,7 +34,7 @@ import retrofit2.Response;
 public class PostsFragment extends Fragment {
 
     GridView posts;
-    ArrayList<String> postText;
+    ArrayList<String> postText,postTime,postPic,userProfile;
     ArrayList<String> displayName;
     ArrayList<String> comments;
     ArrayList<String> likescnt;
@@ -39,6 +43,10 @@ public class PostsFragment extends Fragment {
     ApiInterface apiInterface;
     postDisplayAdapter adapter;
     FloatingActionButton fab;
+    String url,url1;
+    View view1;
+    PopupWindow popupWindow;
+    android.support.design.widget.CoordinatorLayout coordinatorLayout;
 
     public PostsFragment() {
 
@@ -47,15 +55,32 @@ public class PostsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_posts,container,false);
+        final View view=inflater.inflate(R.layout.fragment_posts,container,false);
         sp=getActivity().getSharedPreferences("mypref", Context.MODE_PRIVATE);
         posts=(GridView)view.findViewById(R.id.postsGrid);
+        coordinatorLayout=view.findViewById(R.id.coordinatelayout);
         postText=new ArrayList<String>();
         displayName=new ArrayList<String>();
+        postTime=new ArrayList<String>();
         comments=new ArrayList<String>();
         likescnt=new ArrayList<String>();
         postId=new ArrayList<Integer>();
+        postPic=new ArrayList<String>();
+        userProfile=new ArrayList<String>();
         fab=(FloatingActionButton)view.findViewById(R.id.fab);
+        url="http://10.0.2.2:3005/post/";
+        url1="http://10.0.2.2:3005/profile/";
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater1=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view1=inflater1.inflate(R.layout.posts,null);
+                popupWindow=new PopupWindow(view1,ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
+                popupWindow.showAtLocation(coordinatorLayout, Gravity.CENTER,0,0);
+                //Toast.makeText(getContext(), "Fab clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         apiInterface= ApiClient.getClient().create(ApiInterface.class);
 
@@ -81,9 +106,16 @@ public class PostsFragment extends Fragment {
                         postText.add(data.get(i).getPostText());
                         displayName.add(data.get(i).getDisplayName());
                         postId.add(data.get(i).getPostId());
+                        postTime.add(data.get(i).getCreatedAt());
+                        userProfile.add(data.get(i).getUserProfilePhoto());
+                        if(TextUtils.isEmpty(data.get(i).getPostUrl())){
+                           postPic.add(data.get(i).getPostUrl());
+                        }else {
+                            postPic.add(url+data.get(i).getPostUrl());
+                        }
                     }
-                    //Toast.makeText(getContext(), "Comments size "+comments.size()+" likes size "+likescnt.size(), Toast.LENGTH_SHORT).show();
-                    adapter=new postDisplayAdapter(getContext(),displayName,postText,comments,likescnt,postId);
+                    Log.i("User profile pic",userProfile.toString());
+                    adapter=new postDisplayAdapter(getContext(),displayName,postText,comments,likescnt,postId,postTime,postPic);
                     posts.setAdapter(adapter);
                 }
                 else {

@@ -7,13 +7,13 @@ public class postLikeResponseModel {
 
     @SerializedName("message")
     @Expose
-    private LikeData likeData;
+    private String message;
 
-    public LikeData getData() {
-        return likeData;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMessage(LikeData likeData) {
-        this.likeData = likeData;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
