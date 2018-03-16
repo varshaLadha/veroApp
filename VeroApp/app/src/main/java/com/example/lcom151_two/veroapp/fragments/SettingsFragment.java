@@ -29,10 +29,4 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
-    public void onStart(){
-        super.onStart();
-        Intent intent=new Intent(context,UserProfile.class);
-        startActivity(intent);
-    }
-
 }

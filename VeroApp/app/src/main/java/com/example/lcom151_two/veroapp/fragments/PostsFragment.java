@@ -68,8 +68,8 @@ public class PostsFragment extends Fragment {
         postPic=new ArrayList<String>();
         userProfile=new ArrayList<String>();
         fab=(FloatingActionButton)view.findViewById(R.id.fab);
-        url="http://10.0.2.2:3005/post/";
-        url1="http://10.0.2.2:3005/profile/";
+        url="http://192.168.200.147:3005/post/";
+        url1="http://192.168.200.147:3005/profile/";
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +114,7 @@ public class PostsFragment extends Fragment {
                             postPic.add(url+data.get(i).getPostUrl());
                         }
                     }
-                    Log.i("User profile pic",userProfile.toString());
+                    Log.i("User profile pic",postPic.toString());
                     adapter=new postDisplayAdapter(getContext(),displayName,postText,comments,likescnt,postId,postTime,postPic);
                     posts.setAdapter(adapter);
                 }

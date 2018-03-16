@@ -18,6 +18,8 @@ import android.text.format.DateFormat;
 
 import com.example.lcom151_two.veroapp.apiClasses.ApiClient;
 import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
+import com.example.lcom151_two.veroapp.apiClasses.LikedPostsid;
+import com.example.lcom151_two.veroapp.apiClasses.PostsLikedResponseModel;
 import com.example.lcom151_two.veroapp.apiClasses.postLikeResponseModel;
 import com.squareup.picasso.Picasso;
 
@@ -25,8 +27,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -34,13 +38,13 @@ public class postDisplayAdapter extends BaseAdapter{
 
     private Context context;
     ArrayList<String> userName,postText,cmtcnt,lkscnt,postTime,posturl,userProfile;
-    ArrayList<Integer> postId;
+    ArrayList<Integer> postId,likedPostid;
     SharedPreferences sp;
     String userId;
     ApiInterface apiInterface;
     int height,width;
 
-    public postDisplayAdapter(Context context,ArrayList<String> userName,ArrayList<String> postText,ArrayList<String> cmtcnt,ArrayList<String> lkscnt,ArrayList<Integer> postId,ArrayList<String> postTime,ArrayList<String> posturl){
+    public postDisplayAdapter(Context context, ArrayList<String> userName, ArrayList<String> postText, ArrayList<String> cmtcnt, ArrayList<String> lkscnt, ArrayList<Integer> postId, ArrayList<String> postTime, ArrayList<String> posturl){
         this.context=context;
         this.userName=userName;
         this.postText=postText;
@@ -50,6 +54,7 @@ public class postDisplayAdapter extends BaseAdapter{
         this.postTime=postTime;
         this.posturl=posturl;
 
+        likedPostid=new ArrayList<Integer>();
         sp=context.getSharedPreferences("mypref", Context.MODE_PRIVATE);
         userId=sp.getString("userId","");
         apiInterface= ApiClient.getClient().create(ApiInterface.class);
@@ -87,7 +92,7 @@ public class postDisplayAdapter extends BaseAdapter{
             postContent=convertView.findViewById(R.id.postText);
             commentcnt=convertView.findViewById(R.id.commentcnt);
             likescnt=convertView.findViewById(R.id.likescnt);
-            likePost=convertView.findViewById(R.id.likepost);
+            likePost=convertView.findViewById(R.id.like);
             likedpost=convertView.findViewById(R.id.likedpost);
             postsTime=convertView.findViewById(R.id.postTime);
             postPic=convertView.findViewById(R.id.postpic);
@@ -110,6 +115,33 @@ public class postDisplayAdapter extends BaseAdapter{
                         .into(postPic);
             }
 
+            Call<PostsLikedResponseModel> call=apiInterface.postsLiked(userId);
+            call.enqueue(new Callback<PostsLikedResponseModel>() {
+                @Override
+                public void onResponse(Call<PostsLikedResponseModel> call, Response<PostsLikedResponseModel> response) {
+                    if(response.body().getStatus()==1){
+                        List<LikedPostsid> data=response.body().getData();
+                        for(int i=0;i<data.size();i++){
+                            likedPostid.add(data.get(i).getPostId());
+                        }
+
+                        //Log.i("Posts liked",likedPostid.toString());
+                        for (int i=0;i<likedPostid.size();i++){
+                            if(likedPostid.get(i)==postId.get(position)){
+                                likePost.setImageResource(R.drawable.ic_action_likedheart);
+                                return;
+                            }else {
+                                likePost.setImageResource(R.drawable.ic_action_heart);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PostsLikedResponseModel> call, Throwable t) {
+
+                }
+            });
 
             ZonedDateTime parsed = ZonedDateTime.parse(postTime.get(position));
             ZonedDateTime z = parsed.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
@@ -121,6 +153,8 @@ public class postDisplayAdapter extends BaseAdapter{
                 fmt = DateTimeFormatter.ofPattern("MMM dd yyyy hh:mm:ss a", Locale.ENGLISH);
             }
             postsTime.setText(fmt.format(z));
+
+
 
             likePost.setOnClickListener(new View.OnClickListener() {
                 @Override

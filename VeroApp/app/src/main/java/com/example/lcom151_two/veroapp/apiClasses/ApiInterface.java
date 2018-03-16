@@ -59,4 +59,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("api/search")
     Call<SearchResponseModel> search(@Field("search") String search);
+
+    @FormUrlEncoded
+    @POST("api/following")
+    Call<FollowingUserResponseModel> following(@Field("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("api/postsLiked")
+    Call<PostsLikedResponseModel> postsLiked(@Field("userId") String userId);
 }

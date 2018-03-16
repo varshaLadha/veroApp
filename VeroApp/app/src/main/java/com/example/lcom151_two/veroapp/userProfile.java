@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,8 +42,7 @@ public class UserProfile extends BaseClass {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        //mediapath=R.drawable.user
-        mediapath="";
+        mediapath=Uri.parse("android.resource://"+BuildConfig.APPLICATION_ID+"/"+R.drawable.user).toString();
 
         if(!sp.contains("userId")){
             Intent intent=new Intent(UserProfile.this,Login.class);
@@ -92,7 +92,13 @@ public class UserProfile extends BaseClass {
                         Toast.makeText(UserProfile.this, "Please enter all the details", Toast.LENGTH_SHORT).show();
                         Toast.makeText(UserProfile.this, uname+" "+uemail+" "+uuserId, Toast.LENGTH_SHORT).show();
                     }else {
-                        registerUser(uuserId,uemail,dname,ustatus,uname);
+                        if(Patterns.EMAIL_ADDRESS.matcher(uemail).matches()){
+                            registerUser(uuserId,uemail,dname,ustatus,uname);
+                            //Toast.makeText(UserProfile.this, "All data is valid", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(UserProfile.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+                        }
+                        //registerUser(uuserId,uemail,dname,ustatus,uname);
                         Log.i("Image",mediapath);
                     }
                 }
@@ -127,7 +133,7 @@ public class UserProfile extends BaseClass {
 
         File file=new File(mediapath);
         //Log.i("File content",file.toString()+" files path content");
-        Toast.makeText(this, file.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, file.toString(), Toast.LENGTH_SHORT).show();
         RequestBody requestBody=RequestBody.create(MediaType.parse("image/png"),file);
         MultipartBody.Part body=MultipartBody.Part.createFormData("userPhoto",userId1,requestBody);
 
@@ -155,7 +161,7 @@ public class UserProfile extends BaseClass {
                 userProfileResponse response1=response.body();
                 if(response.code()==200){
                     Intent intent=new Intent(UserProfile.this,UserHome.class);
-                    UserDataModelClass udm=new UserDataModelClass(userId1,userName1,mediapath+".png",userStatus1,email1,displayName1);
+                    UserDataModelClass udm=new UserDataModelClass(userId1,userName1,userId1+".png",userStatus1,email1,displayName1);
                     Gson gson=new Gson();
                     String object=gson.toJson(udm);
                     editor.putString("userDetail", object);

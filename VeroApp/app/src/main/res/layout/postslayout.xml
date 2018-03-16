@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/userData"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="10dp"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -102,7 +102,7 @@
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
                 android:textColor="@android:color/white"
-                android:layout_marginLeft="15dp" />
+                android:layout_marginLeft="10dp" />
 
             <ImageView
                 android:id="@+id/comment"

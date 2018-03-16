@@ -7,8 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.lcom151_two.veroapp.fragments.PostsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <GridView
         android:id="@+id/postsGrid"
         android:layout_width="match_parent"
@@ -20,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="10dp"
+        android:backgroundTint="@color/colorPrimary"
         android:tint="@android:color/white"
         android:src="@android:drawable/ic_input_add" />
 

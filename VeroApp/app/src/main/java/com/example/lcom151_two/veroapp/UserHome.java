@@ -46,6 +46,7 @@ public class UserHome extends BaseClass {
 
             ab=getSupportActionBar();
             ab.setTitle(udm.displayName);
+            Log.i("User info","UserId : "+udm.userId+" Display name : "+udm.displayName+" User Profile : "+udm.userProfile+" User name : "+udm.userName+" User Status : "+udm.status);
 
             background=(ImageView)findViewById(R.id.background);
             Bitmap bitmap=BlurBuilder.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.background_splash));
@@ -79,6 +80,11 @@ public class UserHome extends BaseClass {
 
                 case R.id.settings:
                     fragment=new SettingsFragment();
+                    loadFragment(fragment);
+                    return true;
+
+                case R.id.faviourates:
+                    fragment=new FaviouratesFragment();
                     loadFragment(fragment);
                     return true;
             }
