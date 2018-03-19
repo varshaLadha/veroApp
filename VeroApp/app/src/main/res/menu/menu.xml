@@ -17,7 +17,7 @@
         android:icon="@drawable/settings"
         android:title="Settings"></item>
 
-    <item android:id="@+id/faviourates"
-        android:icon="@drawable/ic_action_star_10"
-        android:title="Faviourates"></item>
+    <item android:id="@+id/profile"
+        android:icon="@drawable/ic_action_user"
+        android:title="Profile"></item>
 </menu>

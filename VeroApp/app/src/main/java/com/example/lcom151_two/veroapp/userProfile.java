@@ -98,7 +98,7 @@ public class UserProfile extends BaseClass {
                         }else {
                             Toast.makeText(UserProfile.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
                         }
-                        //registerUser(uuserId,uemail,dname,ustatus,uname);
+                        registerUser(uuserId,uemail,dname,ustatus,uname);
                         Log.i("Image",mediapath);
                     }
                 }

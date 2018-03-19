@@ -50,26 +50,26 @@
                 android:textSize="15sp"
                 android:textColor="@android:color/white"/>
 
-            <ImageView
-                android:id="@+id/likepost"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="15dp"
-                android:src="@drawable/ic_action_star_0" />
+            <!--<ImageView-->
+                <!--android:id="@+id/likepost"-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_margin="15dp"-->
+                <!--android:src="@drawable/ic_action_star_0" />-->
 
-            <ImageView
-                android:id="@+id/likedpost"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="15dp"
-                android:visibility="gone"
-                android:src="@drawable/ic_action_star_10" />
+            <!--<ImageView-->
+                <!--android:id="@+id/likedpost"-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_margin="15dp"-->
+                <!--android:visibility="gone"-->
+                <!--android:src="@drawable/ic_action_star_10" />-->
         </RelativeLayout>
 
         <TextView
@@ -131,8 +131,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toEndOf="@+id/likescnt"
-                android:layout_toRightOf="@+id/likescnt"
-                android:src="@drawable/ic_action_heart" />
+                android:layout_toRightOf="@+id/likescnt" />
         </RelativeLayout>
     </RelativeLayout>
     <RelativeLayout

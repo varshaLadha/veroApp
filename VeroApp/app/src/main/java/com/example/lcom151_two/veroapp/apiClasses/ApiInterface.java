@@ -15,14 +15,6 @@ import retrofit2.http.PartMap;
 public interface ApiInterface {
 
     @FormUrlEncoded
-    @POST("api/register")
-    Call<responseModel> userRegister(@Field("userId") String userId,
-                                     @Field("email") String email,
-                                     @Field("displayName") String displayName,
-                                     @Field("userStatus") String status,
-                                     @Field("uName") String uName);
-
-    @FormUrlEncoded
     @POST("api/login")
     Call<responseModel> userLogin(@Field("userId") String userId);
 
@@ -67,4 +59,18 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("api/postsLiked")
     Call<PostsLikedResponseModel> postsLiked(@Field("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("api/likes/post")
+    Call<UserLikedPost> username(@Field("postId") Integer postId);
+
+    @FormUrlEncoded
+    @POST("api/comments/post")
+    Call<UserCommentPost> comments(@Field("postId") Integer postId);
+
+    @FormUrlEncoded
+    @POST("api/comments")
+    Call<CommentResponseModel> postComment(@Field("commentText") String commentText,
+                                           @Field("userId") String userId,
+                                           @Field("postId") int postId);
 }
