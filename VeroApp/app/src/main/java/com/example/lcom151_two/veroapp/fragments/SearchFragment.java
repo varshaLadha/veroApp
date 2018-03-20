@@ -18,7 +18,9 @@ import android.widget.Toast;
 import com.example.lcom151_two.veroapp.R;
 import com.example.lcom151_two.veroapp.apiClasses.ApiClient;
 import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
+import com.example.lcom151_two.veroapp.apiClasses.SearchDataModel;
 import com.example.lcom151_two.veroapp.apiClasses.SearchResponseModel;
+import com.example.lcom151_two.veroapp.apiClasses.SearchUserResponseModel;
 import com.example.lcom151_two.veroapp.apiClasses.searchData;
 import com.example.lcom151_two.veroapp.SearchDisplayAdapter;
 
@@ -34,7 +36,7 @@ public class SearchFragment extends Fragment {
     EditText searchValue;
     ImageView searchbtn;
     ApiInterface apiInterface;
-    ArrayList<String> names,uIds;
+    ArrayList<String> names,uIds,profile;
     GridView searchGrid;
 
     public SearchFragment() {}
@@ -49,6 +51,7 @@ public class SearchFragment extends Fragment {
         apiInterface= ApiClient.getClient().create(ApiInterface.class);
         names=new ArrayList<String>();
         uIds=new ArrayList<String>();
+        profile=new ArrayList<String>();
         searchGrid=(GridView)view.findViewById(R.id.searchList);
 
         searchValue.addTextChangedListener(new TextWatcher() {
@@ -64,38 +67,47 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String search=searchValue.getText().toString();
+                String query=searchValue.getText().toString();
                 names.clear();
                 uIds.clear();
-                if(TextUtils.isEmpty(search)){
+                profile.clear();
+                if(TextUtils.isEmpty(query)){
                     searchValue.requestFocus();
                 }else {
-                    Call<SearchResponseModel> call=apiInterface.search(search);
-                    call.enqueue(new Callback<SearchResponseModel>() {
-                        @Override
-                        public void onResponse(Call<SearchResponseModel> call, Response<SearchResponseModel> response) {
-                            List<searchData> data=response.body().getMessage();
-
-                            if(data.size()==0){
-                                Toast.makeText(getContext(), "No data found", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-
+                    try {
+                        Call<SearchUserResponseModel> call = apiInterface.searchUser(query);
+                        call.enqueue(new Callback<SearchUserResponseModel>() {
+                            @Override
+                            public void onResponse(Call<SearchUserResponseModel> call, Response<SearchUserResponseModel> response) {
+                                if (response.code() == 200) {
+                                    List<SearchDataModel> data=response.body().getMessage();
+                                    if(data.size()==0){
+                                        Toast.makeText(getContext(), "No data found", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
 //                            names.clear();
 //                            uIds.clear();
-                            for(int i=0;i<data.size();i++){
-                                Log.v("Data ","Name : "+data.get(i).getDisplayName()+"\nEmail : "+data.get(i).getEmail());
-                                names.add(data.get(i).getDisplayName());
-                                uIds.add(data.get(i).getUserId());
-                            }
-                            searchGrid.setAdapter(new SearchDisplayAdapter(getContext(),names,uIds));
-                        }
+                                    for(int i=0;i<data.size();i++){
+                                        Log.v("Data ","Name : "+data.get(i).getDisplayName()+"\nEmail : "+data.get(i).getEmail());
+                                        names.add(data.get(i).getDisplayName());
+                                        uIds.add(data.get(i).getUserId());
+                                        profile.add(data.get(i).getUserProfilePhoto());
+                                    }
+                                    searchGrid.setAdapter(new SearchDisplayAdapter(getContext(),names,uIds,profile));
+                                    } else {
+                                        Toast.makeText(getContext(), "Problem", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
 
-                        @Override
-                        public void onFailure(Call<SearchResponseModel> call, Throwable t) {
-                            Toast.makeText(getContext(), "Error : "+t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<SearchUserResponseModel> call, Throwable t) {
+                                Toast.makeText(getContext(), "Failure occurred " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }catch (Exception e){
+                        Toast.makeText(getContext(), "Exception occured "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("Exception",e.getMessage());
+                    }
                 }
             }
         });
@@ -107,34 +119,6 @@ public class SearchFragment extends Fragment {
                 if(TextUtils.isEmpty(search)){
                     searchValue.requestFocus();
                 }
-//                else {
-//                    Call<SearchResponseModel> call=apiInterface.search(search);
-//                    call.enqueue(new Callback<SearchResponseModel>() {
-//                        @Override
-//                        public void onResponse(Call<SearchResponseModel> call, Response<SearchResponseModel> response) {
-//                            List<searchData> data=response.body().getMessage();
-//
-//                            if(data.size()==0){
-//                                Toast.makeText(getContext(), "No data found", Toast.LENGTH_SHORT).show();
-//                                return;
-//                            }
-//
-//                            names.clear();
-//                            uIds.clear();
-//                            for(int i=0;i<data.size();i++){
-//                                Log.v("Data ","Name : "+data.get(i).getDisplayName()+"\nEmail : "+data.get(i).getEmail());
-//                                names.add(data.get(i).getDisplayName());
-//                                uIds.add(data.get(i).getUserId());
-//                            }
-//                            searchGrid.setAdapter(new SearchDisplayAdapter(getContext(),names,uIds));
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<SearchResponseModel> call, Throwable t) {
-//                            Toast.makeText(getContext(), "Error : "+t.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
             }
         });
 

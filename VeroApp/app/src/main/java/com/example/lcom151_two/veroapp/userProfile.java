@@ -42,7 +42,7 @@ public class UserProfile extends BaseClass {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        mediapath=Uri.parse("android.resource://"+BuildConfig.APPLICATION_ID+"/"+R.drawable.user).toString();
+        //mediapath=Uri.parse("android.resource://"+BuildConfig.APPLICATION_ID+"/"+R.drawable.user).toString();
 
         if(!sp.contains("userId")){
             Intent intent=new Intent(UserProfile.this,Login.class);
@@ -99,7 +99,7 @@ public class UserProfile extends BaseClass {
                             Toast.makeText(UserProfile.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
                         }
                         registerUser(uuserId,uemail,dname,ustatus,uname);
-                        Log.i("Image",mediapath);
+                        //Log.i("Image",mediapath);
                     }
                 }
             });

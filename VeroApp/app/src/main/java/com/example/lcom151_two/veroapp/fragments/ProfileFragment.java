@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 import com.example.lcom151_two.veroapp.R;
 import com.example.lcom151_two.veroapp.UserDataModelClass;
 import com.example.lcom151_two.veroapp.UserHome;
-import com.example.lcom151_two.veroapp.UserProfile;
 import com.example.lcom151_two.veroapp.apiClasses.ApiClient;
 import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
 import com.example.lcom151_two.veroapp.apiClasses.userProfileResponse;
@@ -66,7 +64,7 @@ public class ProfileFragment extends Fragment {
         Gson gson=new Gson();
         String object=sp.getString("userDetail","");
         UserDataModelClass udm=gson.fromJson(object,UserDataModelClass.class);
-        mediapath="http://192.168.200.147:3005/profile/"+udm.getUserProfile();
+        //mediapath="http://192.168.200.147:3005/profile/"+udm.getUserProfile();
 
         userId=udm.getUserId();
         email=udm.getEmail();
@@ -103,14 +101,13 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getContext(), "Please enter all the details", Toast.LENGTH_SHORT).show();
                     //Toast.makeText(getContext(), uname+" "+uemail+" "+uuserId, Toast.LENGTH_SHORT).show();
                 }else {
-//                    if(Patterns.EMAIL_ADDRESS.matcher(uemail).matches()){
-//                        registerUser(uuserId,uemail,dname,ustatus,uname);
-//                        //Toast.makeText(UserProfile.this, "All data is valid", Toast.LENGTH_SHORT).show();
-//                    }else {
-//                        Toast.makeText(UserProfile.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
-//                    }
-                    registerUser(userId,email,dname,ustatus,uname);
-                    //Log.i("Image",mediapath);
+                    //updateUser(userId,email,dname,ustatus,uname);
+                    Log.i("Image",mediapath+"");
+                    if(mediapath==null){
+                        updateUserProfile(userId,email,dname,ustatus,uname);
+                    }else {
+                        updateUser(userId,email,dname,ustatus,uname);
+                    }
                 }
             }
         });
@@ -148,7 +145,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void registerUser(final String userId1, final String email1, final String displayName1, final String userStatus1, final String userName1){
+    private void updateUser(final String userId1, final String email1, final String displayName1, final String userStatus1, final String userName1){
 
         File file=new File(mediapath);
         editor=sp.edit();
@@ -193,7 +190,35 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<userProfileResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Failed"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.i("Failure : ","Message : "+t.getMessage()+" Localize Message:  "+t.getLocalizedMessage()+" Tostring : "+t.toString());
+            }
+        });
+    }
+
+    private void updateUserProfile(final String userId, final String email, final String displayName, final String userStatus, final String userName){
+        editor=sp.edit();
+        Call<userProfileResponse> call=apiInterface.profileWithoutImage(userId,email,displayName,userStatus,userName);
+        call.enqueue(new Callback<userProfileResponse>() {
+            @Override
+            public void onResponse(Call<userProfileResponse> call, Response<userProfileResponse> response) {
+                if(response.code()==200){
+                    Toast.makeText(getContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(getContext(),UserHome.class);
+                    UserDataModelClass udm=new UserDataModelClass(userId,userName,userId+".png",userStatus,email,displayName);
+                    Gson gson=new Gson();
+                    String object=gson.toJson(udm);
+                    editor.putString("userDetail", object);
+                    editor.commit();
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getContext(), "Problem occured", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<userProfileResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed "+t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.i("Failure : ","Message : "+t.getMessage()+" Localize Message:  "+t.getLocalizedMessage()+" Tostring : "+t.toString());
             }
         });

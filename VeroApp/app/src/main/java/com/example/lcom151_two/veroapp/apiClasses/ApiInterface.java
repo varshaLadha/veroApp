@@ -7,10 +7,12 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 
 public interface ApiInterface {
 
@@ -23,12 +25,16 @@ public interface ApiInterface {
     Call<responseModel> verifyUser(@Field("otp") int otp,
                                    @Field("userId") String userId);
 
+    @Multipart
+    @POST("api/posts")
+    Call<getPostsResponseModel> postWithImage(@PartMap HashMap<String,RequestBody> requestBodyHashMap,@Part MultipartBody.Part file);
+
     @FormUrlEncoded
     @POST("api/posts")
-    Call<responseModel> post(@Field("postType") String postType,
+    Call<getPostsResponseModel> post(@Field("postType") String postType,
                              @Field("postText") String postText,
                              @Field("userId") String userId,
-                             @Field("privacy") String privacy);
+                             @Field("privacy") Integer privacy);
 
     @FormUrlEncoded
     @POST("api/likes")
@@ -49,8 +55,16 @@ public interface ApiInterface {
     Call<userProfileResponse> setProfile(@PartMap HashMap<String, RequestBody> requestBodyHashMap, @Part MultipartBody.Part file);
 
     @FormUrlEncoded
-    @POST("api/search")
-    Call<SearchResponseModel> search(@Field("search") String search);
+    @POST("api/profile")
+    Call<userProfileResponse> profileWithoutImage(@Field("userId") String userId,
+                                                  @Field("email") String email,
+                                                  @Field("displayName") String displayName,
+                                                  @Field("userStatus") String userStatus,
+                                                  @Field("userName") String userName);
+
+//    @FormUrlEncoded
+//    @POST("api/search")
+//    Call<SearchResponseModel> search(@Field("search") String search);
 
     @FormUrlEncoded
     @POST("api/following")
@@ -73,4 +87,8 @@ public interface ApiInterface {
     Call<CommentResponseModel> postComment(@Field("commentText") String commentText,
                                            @Field("userId") String userId,
                                            @Field("postId") int postId);
+
+    @GET("api/search/{query}")
+    Call<SearchUserResponseModel> searchUser(@Path("query") String query);
+
 }

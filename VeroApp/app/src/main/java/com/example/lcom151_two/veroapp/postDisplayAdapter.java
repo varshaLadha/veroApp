@@ -207,7 +207,7 @@ public class postDisplayAdapter extends BaseAdapter{
                                 for(int i=0;i<usernames.size();i++){
                                     names.add(usernames.get(i).getDisplayName());
                                 }
-                                Log.i("Users name",names.toString());
+                                //Log.i("Users name",names.toString());
 
                                 gridView.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,names));
                                 bottomSheetDialog.setContentView(view);
