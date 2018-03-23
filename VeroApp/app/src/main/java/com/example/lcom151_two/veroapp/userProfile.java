@@ -42,8 +42,6 @@ public class UserProfile extends BaseClass {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        //mediapath=Uri.parse("android.resource://"+BuildConfig.APPLICATION_ID+"/"+R.drawable.user).toString();
-
         if(!sp.contains("userId")){
             Intent intent=new Intent(UserProfile.this,Login.class);
             startActivity(intent);
@@ -56,17 +54,8 @@ public class UserProfile extends BaseClass {
         }
         else {
             uuserId=sp.getString("userId","");
-            //Toast.makeText(this, "userId : "+uuserId, Toast.LENGTH_SHORT).show();
 
-            imageView=(ImageView)findViewById(R.id.background);
-            userprofile=(ImageView)findViewById(R.id.userpic);
-            name=(EditText)findViewById(R.id.displayname);
-            email=(EditText)findViewById(R.id.email);
-            setprofile=(Button)findViewById(R.id.setProfile);
-            selectpic=(Button)findViewById(R.id.selectpic);
-            status=(EditText)findViewById(R.id.status);
-            username=(EditText)findViewById(R.id.username);
-            bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.user);
+            initView();
 
             Bitmap bitmap=BlurBuilder.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.background_splash));
             imageView.setImageBitmap(bitmap);
@@ -84,25 +73,42 @@ public class UserProfile extends BaseClass {
             setprofile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String dname=name.getText().toString();
-                    String uemail=email.getText().toString();
-                    String uname=username.getText().toString();
-                    String ustatus=status.getText().toString();
-                    if(TextUtils.isEmpty(uname) || TextUtils.isEmpty(uemail) || TextUtils.isEmpty(uuserId) || TextUtils.isEmpty(dname)){
-                        Toast.makeText(UserProfile.this, "Please enter all the details", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(UserProfile.this, uname+" "+uemail+" "+uuserId, Toast.LENGTH_SHORT).show();
-                    }else {
-                        if(Patterns.EMAIL_ADDRESS.matcher(uemail).matches()){
-                            registerUser(uuserId,uemail,dname,ustatus,uname);
-                            //Toast.makeText(UserProfile.this, "All data is valid", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(UserProfile.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
-                        }
-                        registerUser(uuserId,uemail,dname,ustatus,uname);
-                        //Log.i("Image",mediapath);
-                    }
+                    setUserprofile();
                 }
             });
+        }
+    }
+
+    public void initView(){
+        imageView=(ImageView)findViewById(R.id.background);
+        userprofile=(ImageView)findViewById(R.id.userpic);
+        name=(EditText)findViewById(R.id.displayname);
+        email=(EditText)findViewById(R.id.email);
+        setprofile=(Button)findViewById(R.id.setProfile);
+        selectpic=(Button)findViewById(R.id.selectpic);
+        status=(EditText)findViewById(R.id.status);
+        username=(EditText)findViewById(R.id.username);
+        bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.user);
+    }
+
+    public void setUserprofile(){
+        String dname=name.getText().toString();
+        String uemail=email.getText().toString();
+        String uname=username.getText().toString();
+        String ustatus=status.getText().toString();
+        if(TextUtils.isEmpty(uname) || TextUtils.isEmpty(uemail) || TextUtils.isEmpty(uuserId) || TextUtils.isEmpty(dname)){
+            Toast.makeText(UserProfile.this, "Please enter all the details", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UserProfile.this, uname+" "+uemail+" "+uuserId, Toast.LENGTH_SHORT).show();
+        }else {
+            if(Patterns.EMAIL_ADDRESS.matcher(uemail).matches()){
+                if(mediapath==null){
+                    registerUserWithoutProfile(uuserId,uemail,dname,ustatus,uname);
+                }else {
+                    registerUser(uuserId,uemail,dname,ustatus,uname);
+                }
+            }else {
+                Toast.makeText(UserProfile.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -132,12 +138,8 @@ public class UserProfile extends BaseClass {
     private void registerUser(final String userId1, final String email1, final String displayName1, final String userStatus1, final String userName1){
 
         File file=new File(mediapath);
-        //Log.i("File content",file.toString()+" files path content");
-        //Toast.makeText(this, file.toString(), Toast.LENGTH_SHORT).show();
         RequestBody requestBody=RequestBody.create(MediaType.parse("image/png"),file);
         MultipartBody.Part body=MultipartBody.Part.createFormData("userPhoto",userId1,requestBody);
-
-        //Log.i("requestbody content",requestBody.toString()+" requestbody path content");
 
         RequestBody userId=RequestBody.create(MediaType.parse("text/plain"),userId1);
         RequestBody email =RequestBody.create(MediaType.parse("text/plain"),email1);
@@ -172,10 +174,38 @@ public class UserProfile extends BaseClass {
                     Toast.makeText(UserProfile.this, "Problem occured", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<userProfileResponse> call, Throwable t) {
                 Toast.makeText(UserProfile.this, "Failed"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.i("Failure : ","Message : "+t.getMessage()+" Localize Message:  "+t.getLocalizedMessage()+" Tostring : "+t.toString());
+            }
+        });
+    }
+
+    private void registerUserWithoutProfile(final String userId, final String email, final String displayName, final String userStatus, final String userName){
+        editor=sp.edit();
+        Call<userProfileResponse> call=apiInterface.profileWithoutImage(userId,email,displayName,userStatus,userName);
+        call.enqueue(new Callback<userProfileResponse>() {
+            @Override
+            public void onResponse(Call<userProfileResponse> call, Response<userProfileResponse> response) {
+                editor.putString("profileSet",userId);
+                editor.commit();
+                if(response.code()==200){
+                    Intent intent=new Intent(UserProfile.this,UserHome.class);
+                    UserDataModelClass udm=new UserDataModelClass(userId,userName,userId+".png",userStatus,email,displayName);
+                    Gson gson=new Gson();
+                    String object=gson.toJson(udm);
+                    editor.putString("userDetail", object);
+                    editor.commit();
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(UserProfile.this, "Problem occured", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<userProfileResponse> call, Throwable t) {
+                Toast.makeText(UserProfile.this, "Failed "+t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.i("Failure : ","Message : "+t.getMessage()+" Localize Message:  "+t.getLocalizedMessage()+" Tostring : "+t.toString());
             }
         });

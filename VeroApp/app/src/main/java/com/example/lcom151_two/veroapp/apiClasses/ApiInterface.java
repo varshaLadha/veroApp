@@ -46,9 +46,8 @@ public interface ApiInterface {
     Call<responseModel> followUser(@Field("userId") String userId,
                                    @Field("fuserId") String fuserId);
 
-    @FormUrlEncoded
-    @POST("api/posts/private")
-    Call<getPostsResponseModel> getPosts(@Field("userId") String userId);
+    @GET("api/post/{userId}")
+    Call<getPostsResponseModel> getPosts(@Path("userId") String userId);
 
     @Multipart
     @POST("api/profile")
@@ -61,10 +60,6 @@ public interface ApiInterface {
                                                   @Field("displayName") String displayName,
                                                   @Field("userStatus") String userStatus,
                                                   @Field("userName") String userName);
-
-//    @FormUrlEncoded
-//    @POST("api/search")
-//    Call<SearchResponseModel> search(@Field("search") String search);
 
     @FormUrlEncoded
     @POST("api/following")

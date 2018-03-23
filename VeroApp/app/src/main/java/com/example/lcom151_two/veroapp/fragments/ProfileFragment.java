@@ -43,7 +43,7 @@ import retrofit2.Response;
 public class ProfileFragment extends Fragment {
 
     SharedPreferences sp;
-    String userId,email,mediapath;
+    String userId,email,mediapath,object;
     Button profileSelect,updateProfile;
     EditText username,displayname,status;
     ImageView userpic;
@@ -51,6 +51,8 @@ public class ProfileFragment extends Fragment {
     Bitmap bitmap;
     ApiInterface apiInterface;
     SharedPreferences.Editor editor;
+    UserDataModelClass udm;
+    Gson gson;
 
     public ProfileFragment() {
 
@@ -60,26 +62,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_profile, container, false);;
-        sp=getActivity().getSharedPreferences("mypref", Context.MODE_PRIVATE);
-        Gson gson=new Gson();
-        String object=sp.getString("userDetail","");
-        UserDataModelClass udm=gson.fromJson(object,UserDataModelClass.class);
-        //mediapath="http://192.168.200.147:3005/profile/"+udm.getUserProfile();
 
-        userId=udm.getUserId();
-        email=udm.getEmail();
-
-        apiInterface= ApiClient.getClient().create(ApiInterface.class);
-
-        username=view.findViewById(R.id.username);
-        displayname=view.findViewById(R.id.displayname);
-        status=view.findViewById(R.id.status);
-        userpic=view.findViewById(R.id.userpic);
-
-        //Toast.makeText(getContext(), userId+ " "+email, Toast.LENGTH_SHORT).show();
-
-        profileSelect=view.findViewById(R.id.selectpic);
-        updateProfile=view.findViewById(R.id.updateProfile);
+        initViews(view);
 
         profileSelect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,9 +83,7 @@ public class ProfileFragment extends Fragment {
                 String ustatus=status.getText().toString();
                 if(TextUtils.isEmpty(uname) ||  TextUtils.isEmpty(dname)){
                     Toast.makeText(getContext(), "Please enter all the details", Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getContext(), uname+" "+uemail+" "+uuserId, Toast.LENGTH_SHORT).show();
                 }else {
-                    //updateUser(userId,email,dname,ustatus,uname);
                     Log.i("Image",mediapath+"");
                     if(mediapath==null){
                         updateUserProfile(userId,email,dname,ustatus,uname);
@@ -112,14 +94,36 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
+
+        return view;
+    }
+
+    public void initViews(View view){
+        sp=getActivity().getSharedPreferences("mypref", Context.MODE_PRIVATE);
+        gson=new Gson();
+        object=sp.getString("userDetail","");
+        udm=gson.fromJson(object,UserDataModelClass.class);
+
+        userId=udm.getUserId();
+        email=udm.getEmail();
+
+        apiInterface= ApiClient.getClient().create(ApiInterface.class);
+
+        username=view.findViewById(R.id.username);
+        displayname=view.findViewById(R.id.displayname);
+        status=view.findViewById(R.id.status);
+        userpic=view.findViewById(R.id.userpic);
+
+        profileSelect=view.findViewById(R.id.selectpic);
+        updateProfile=view.findViewById(R.id.updateProfile);
+
         username.setText(udm.getUserName());
         displayname.setText(udm.getDisplayName());
         status.setText(udm.getStatus());
         Picasso.get()
                 .load("http://192.168.200.147:3005/profile/"+udm.getUserProfile())
                 .into(userpic);
-
-        return view;
     }
 
     @Override

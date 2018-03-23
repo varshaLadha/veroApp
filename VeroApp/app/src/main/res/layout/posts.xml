@@ -10,26 +10,27 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:textSize="25dp"
+                android:text="Enter post data"
                 android:textColor="@android:color/black"
-                android:text="Enter post data"/>
+                android:textSize="25dp" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/postPic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_marginTop="20dp"
                 android:layout_below="@+id/title"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/user"
-                android:layout_margin="10dp"
+                android:src="@drawable/cam"
                 app:civ_border_width="2dp"
                 app:civ_border_color="#EEEEEE"/>
             <Button
@@ -38,10 +39,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/postPic"
-                android:background="@drawable/button_bg_stroke"
                 android:textAllCaps="false"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_border"
                 android:text="Select post pic"/>
 
         <EditText
@@ -49,6 +51,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/selectpic"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
             android:hint="Enter post content here"/>
 
         <CheckBox
@@ -56,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
+            android:layout_marginLeft="20dp"
             android:textColorHint="@android:color/black"
             android:hint="Do you want to keep your post private?"
             android:layout_below="@id/postText"/>
@@ -68,6 +74,10 @@
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:textAllCaps="false"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_border"
             android:layout_below="@id/privacy"/>
         </RelativeLayout>
     </ScrollView>

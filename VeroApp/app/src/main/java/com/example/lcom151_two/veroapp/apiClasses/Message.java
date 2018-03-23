@@ -158,4 +158,5 @@ public class Message {
     public void setUserProfilePhoto(String userProfilePhoto) {
         this.userProfilePhoto = userProfilePhoto;
     }
+
 }

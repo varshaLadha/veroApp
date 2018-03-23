@@ -31,8 +31,9 @@ public class SearchDisplayAdapter extends BaseAdapter{
     Context context;
     ArrayList<String> username,fuserId,uids,profile;
     SharedPreferences sp;
-    String userId,url;
-    ApiInterface apiInterface;
+    String userId;
+    String object,name;
+    UserDataModelClass udm;
 
     public SearchDisplayAdapter(Context context, ArrayList<String> username,ArrayList<String> uids,ArrayList<String> profile){
         this.context=context;
@@ -43,8 +44,6 @@ public class SearchDisplayAdapter extends BaseAdapter{
         sp=context.getSharedPreferences("mypref", Context.MODE_PRIVATE);
         userId=sp.getString("userId","");
         fuserId=new ArrayList<String>();
-        url="http://192.168.200.147:3005/profile/";
-        apiInterface= ApiClient.getClient().create(ApiInterface.class);
     }
 
     @Override
@@ -69,16 +68,16 @@ public class SearchDisplayAdapter extends BaseAdapter{
         final ImageView userPic;
         try{
             Gson gson=new Gson();
-            String object=sp.getString("userDetail","");
-            UserDataModelClass udm=gson.fromJson(object,UserDataModelClass.class);
-            final String name=udm.displayName;
+            object=sp.getString("userDetail","");
+            udm=gson.fromJson(object,UserDataModelClass.class);
+            name=udm.displayName;
 
             convertView= LayoutInflater.from(context).inflate(R.layout.searchdata,null);
             userDisplay=convertView.findViewById(R.id.username);
             follow=convertView.findViewById(R.id.follow);
             userPic=convertView.findViewById(R.id.userpic);
 
-            retrofit2.Call<FollowingUserResponseModel> call=apiInterface.following(userId);
+            retrofit2.Call<FollowingUserResponseModel> call=GlobalClass.apiInterface.following(userId);
             call.enqueue(new Callback<FollowingUserResponseModel>() {
                 @Override
                 public void onResponse(retrofit2.Call<FollowingUserResponseModel> call, Response<FollowingUserResponseModel> response) {
@@ -90,7 +89,7 @@ public class SearchDisplayAdapter extends BaseAdapter{
                         try {
                             if(!TextUtils.isEmpty(profile.get(position))) {
                                 Picasso.get()
-                                        .load(url + profile.get(position))
+                                        .load(GlobalClass.profileurl + profile.get(position))
                                         .into(userPic);
                             }else {
                                 userPic.setImageResource(R.drawable.user);
@@ -101,7 +100,7 @@ public class SearchDisplayAdapter extends BaseAdapter{
                                     userDisplay.setText(username.get(position));
                                     follow.setText("Following");
                                     return;
-                                } else if (username.get(position).equals(name)) {
+                                } else if (uids.get(position).equals(userId)) {
                                     userDisplay.setText(username.get(position));
                                     follow.setVisibility(View.GONE);
                                 } else {
@@ -110,7 +109,7 @@ public class SearchDisplayAdapter extends BaseAdapter{
                                 }
                             }
                         }catch (Exception e){
-                            //Toast.makeText(context, "Exception occurred : "+e.getMessage(), Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 }
@@ -125,9 +124,9 @@ public class SearchDisplayAdapter extends BaseAdapter{
                 @Override
                 public void onClick(View v) {
                     if(follow.getText().equals("Following")){
-                        //Toast.makeText(context, "Already following user", Toast.LENGTH_SHORT).show();
+
                     }else {
-                        Call<responseModel> call1=apiInterface.followUser(userId,uids.get(position));
+                        Call<responseModel> call1=GlobalClass.apiInterface.followUser(userId,uids.get(position));
                         call1.enqueue(new Callback<responseModel>() {
                             @Override
                             public void onResponse(Call<responseModel> call, Response<responseModel> response) {
@@ -151,7 +150,6 @@ public class SearchDisplayAdapter extends BaseAdapter{
             Toast.makeText(context, "Problem occurred : "+e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e("Error : ",e.getStackTrace().toString());
         }
-
 
         return convertView;
     }

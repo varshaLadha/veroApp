@@ -37,6 +37,11 @@ public class UserHome extends BaseClass implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
+       initView();
+
+    }
+
+    public void initView(){
         posts=(ImageButton) findViewById(R.id.posts);
         notification=(ImageButton) findViewById(R.id.notifications);
         settings=(ImageButton) findViewById(R.id.settings);

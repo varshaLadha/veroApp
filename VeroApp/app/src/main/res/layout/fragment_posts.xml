@@ -7,10 +7,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.lcom151_two.veroapp.fragments.PostsFragment">
 
-    <GridView
+    <!--<GridView-->
+        <!--android:id="@+id/postsGrid"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></GridView>-->
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/postsGrid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></GridView>
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -11,7 +11,8 @@ import com.example.lcom151_two.veroapp.R;
 
 public class NotificationFragment extends Fragment {
 
-
+//SELECT displayName FROM user WHERE userId IN(SELECT DISTINCT(likes.userId) FROM likes INNER JOIN posts ON likes.postId=posts.postId WHERE posts.userId=916523874591)
+//SELECT user.displayName,posts.postText FROM user INNER JOIN posts on user.userId=posts.userId  WHERE user.userId IN(SELECT DISTINCT(likes.userId) FROM likes INNER JOIN posts ON likes.postId=posts.postId WHERE posts.userId=916523874591)
     public NotificationFragment() {
 
     }

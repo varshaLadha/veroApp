@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/title"
@@ -13,11 +17,23 @@
         android:text="Comments by"
         android:gravity="center"/>
 
-    <GridView
+        <TextView
+            android:id="@+id/noComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:textColor="@android:color/black"
+            android:text="No comments yet. Be the first one to comment!!!"/>
+
+    <ListView
         android:id="@+id/comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"></GridView>
+        android:layout_weight="1"
+        android:layout_below="@+id/title"></ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,18 +45,20 @@
             android:id="@+id/postComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:hint="Enter comment" />
 
         <Button
             android:id="@+id/send"
-            android:layout_width="75dp"
+            android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
             android:background="@drawable/ic_action_send"
             android:layout_alignParentRight="true" />
     </LinearLayout>
-
+    </LinearLayout>
 
 </RelativeLayout>
