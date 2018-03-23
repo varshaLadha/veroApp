@@ -154,12 +154,15 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
                             holder.likePost.setImageResource(R.drawable.ic_action_heart);
                         }
                     }
+                }else {
+                    Toast.makeText(context, "Problem fetching data", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PostsLikedResponseModel> call, Throwable t) {
-
+                Toast.makeText(context, "Failure occurred "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Failure occurred",t.getMessage());
             }
         });
 

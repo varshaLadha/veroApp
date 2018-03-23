@@ -5,21 +5,17 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 
 import com.example.lcom151_two.veroapp.fragments.ProfileFragment;
 import com.example.lcom151_two.veroapp.fragments.NotificationFragment;
 import com.example.lcom151_two.veroapp.fragments.PostsFragment;
 import com.example.lcom151_two.veroapp.fragments.SearchFragment;
-import com.example.lcom151_two.veroapp.fragments.SettingsFragment;
+import com.example.lcom151_two.veroapp.fragments.FavouratePosts;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -30,7 +26,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
     List<String> postText;
     ImageView background;
     android.support.v7.app.ActionBar ab;
-    ImageButton posts,notification,settings,search,user;
+    ImageButton posts,notification,faviouratePosts,search,user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +40,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
     public void initView(){
         posts=(ImageButton) findViewById(R.id.posts);
         notification=(ImageButton) findViewById(R.id.notifications);
-        settings=(ImageButton) findViewById(R.id.settings);
+        faviouratePosts=(ImageButton) findViewById(R.id.faviouratePosts);
         search=(ImageButton) findViewById(R.id.search);
         user=(ImageButton) findViewById(R.id.profile);
 
@@ -78,35 +74,35 @@ public class UserHome extends BaseClass implements View.OnClickListener{
         Fragment fragment;
         switch (v.getId()){
             case R.id.posts:
-                setFocused(R.drawable.posts_focused,R.drawable.search,R.drawable.ntoifications,R.drawable.settings,R.drawable.user1);
+                setFocused(R.drawable.posts_focused,R.drawable.search,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1);
 
                     fragment=new PostsFragment();
                     loadFragment(fragment);
                     break;
 
                 case R.id.search:
-                    setFocused(R.drawable.posts,R.drawable.search_focused,R.drawable.ntoifications,R.drawable.settings,R.drawable.user1);
+                    setFocused(R.drawable.posts,R.drawable.search_focused,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1);
 
                     fragment=new SearchFragment();
                     loadFragment(fragment);
                     break;
 
                 case R.id.notifications:
-                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications_focused,R.drawable.settings,R.drawable.user1);
+                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications_focused,R.drawable.faviourate,R.drawable.user1);
 
                     fragment=new NotificationFragment();
                     loadFragment(fragment);
                     break;
 
-                case R.id.settings:
-                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications,R.drawable.settings_focused,R.drawable.user1);
+                case R.id.faviouratePosts:
+                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications,R.drawable.favoureat_focused,R.drawable.user1);
 
-                    fragment=new SettingsFragment();
+                    fragment=new FavouratePosts();
                     loadFragment(fragment);
                     break;
 
                 case R.id.profile:
-                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications,R.drawable.settings,R.drawable.user1_focused);
+                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1_focused);
 
                     fragment=new ProfileFragment();
                     loadFragment(fragment);
@@ -118,7 +114,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
         posts.setImageResource(postDrawable);
         search.setImageResource(searchDrawable);
         notification.setImageResource(notificationDrawable);
-        settings.setImageResource(settingDrawable);
+        faviouratePosts.setImageResource(settingDrawable);
         user.setImageResource(profileDrawable);
     }
 
