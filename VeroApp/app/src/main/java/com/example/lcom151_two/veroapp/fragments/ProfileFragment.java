@@ -153,8 +153,6 @@ public class ProfileFragment extends Fragment {
 
         File file=new File(mediapath);
         editor=sp.edit();
-        //Log.i("File content",file.toString()+" files path content");
-        //Toast.makeText(this, file.toString(), Toast.LENGTH_SHORT).show();
         RequestBody requestBody=RequestBody.create(MediaType.parse("image/png"),file);
         MultipartBody.Part body=MultipartBody.Part.createFormData("userPhoto",userId1,requestBody);
 
@@ -175,8 +173,6 @@ public class ProfileFragment extends Fragment {
         call.enqueue(new Callback<userProfileResponse>() {
             @Override
             public void onResponse(Call<userProfileResponse> call, Response<userProfileResponse> response) {
-//                editor.putString("profileSet",userId1);
-//                editor.commit();
                 userProfileResponse response1=response.body();
                 if(response.code()==200){
                     Toast.makeText(getContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show();

@@ -24,9 +24,10 @@ import java.util.List;
 public class UserHome extends BaseClass implements View.OnClickListener{
 
     List<String> postText;
-    ImageView background;
+    //ImageView background;
     android.support.v7.app.ActionBar ab;
     ImageButton posts,notification,faviouratePosts,search,user;
+    UserDataModelClass udm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +54,15 @@ public class UserHome extends BaseClass implements View.OnClickListener{
         }else {
             Gson gson=new Gson();
             String object=sp.getString("userDetail","");
-            UserDataModelClass udm=gson.fromJson(object,UserDataModelClass.class);
+            udm=gson.fromJson(object,UserDataModelClass.class);
 
             ab=getSupportActionBar();
-            ab.setTitle(udm.displayName);
+            ab.setTitle("Posts Feed");
             Log.i("User info","UserId : "+udm.userId+" Display name : "+udm.displayName+" User Profile : "+udm.userProfile+" User name : "+udm.userName+" User Status : "+udm.status);
 
-            background=(ImageView)findViewById(R.id.background);
-            Bitmap bitmap=BlurBuilder.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.background_splash));
-            background.setImageBitmap(bitmap);
+//            background=(ImageView)findViewById(R.id.background);
+//            Bitmap bitmap=BlurBuilder.blur(this, BitmapFactory.decodeResource(getResources(),R.drawable.background_splash));
+//            background.setImageBitmap(bitmap);
 
             loadFragment(new PostsFragment());
             posts.setImageResource(R.drawable.posts_focused);
@@ -76,6 +77,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
             case R.id.posts:
                 setFocused(R.drawable.posts_focused,R.drawable.search,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1);
 
+                    ab.setTitle("Posts Feed");
                     fragment=new PostsFragment();
                     loadFragment(fragment);
                     break;
@@ -83,6 +85,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
                 case R.id.search:
                     setFocused(R.drawable.posts,R.drawable.search_focused,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1);
 
+                    ab.setTitle("Search Users");
                     fragment=new SearchFragment();
                     loadFragment(fragment);
                     break;
@@ -90,6 +93,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
                 case R.id.notifications:
                     setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications_focused,R.drawable.faviourate,R.drawable.user1);
 
+                    ab.setTitle("Notifications");
                     fragment=new NotificationFragment();
                     loadFragment(fragment);
                     break;
@@ -97,6 +101,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
                 case R.id.faviouratePosts:
                     setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications,R.drawable.favoureat_focused,R.drawable.user1);
 
+                    ab.setTitle("Favourite Posts");
                     fragment=new FavouratePosts();
                     loadFragment(fragment);
                     break;
@@ -104,6 +109,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
                 case R.id.profile:
                     setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1_focused);
 
+                    ab.setTitle(udm.displayName);
                     fragment=new ProfileFragment();
                     loadFragment(fragment);
                     break;

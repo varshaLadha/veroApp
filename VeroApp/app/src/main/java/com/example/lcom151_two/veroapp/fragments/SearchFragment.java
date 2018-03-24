@@ -14,9 +14,11 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lcom151_two.veroapp.GlobalClass;
+import com.example.lcom151_two.veroapp.ModalClasses.SearchModalClass;
 import com.example.lcom151_two.veroapp.R;
 import com.example.lcom151_two.veroapp.apiClasses.ApiClient;
 import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
@@ -37,8 +39,10 @@ public class SearchFragment extends Fragment {
 
     EditText searchValue;
     ImageView searchbtn;
-    ArrayList<String> names,uIds,profile;
+    ArrayList<SearchModalClass> searchModalClass,smodal1;
     ListView searchGrid;
+    TextView noUser;
+    SearchDisplayAdapter adapter;
 
     public SearchFragment() {}
 
@@ -48,6 +52,8 @@ public class SearchFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_search,null);
 
         initViews(view);
+
+        getUsers();
 
         searchValue.addTextChangedListener(new TextWatcher() {
             @Override
@@ -62,7 +68,31 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                search();
+
+                String query=searchValue.getText().toString();
+                if(query.length()>0){
+                    ArrayList<SearchModalClass> smodal=new ArrayList<SearchModalClass>();
+
+                    for(SearchModalClass sm : searchModalClass){
+                        if(sm.getDisplayName().toLowerCase().contains(query) || sm.getUserId().contains(query) || sm.getEmail().toLowerCase().contains(query))
+                            smodal.add(sm);
+                    }
+                    if(smodal.size()>0){
+                        noUser.setVisibility(View.GONE);
+                        searchGrid.setVisibility(View.VISIBLE);
+                        adapter.filteredData(smodal);
+                    }else {
+                        noUser.setVisibility(View.VISIBLE);
+                        noUser.setText("No user found");
+                        searchGrid.setVisibility(View.GONE);
+                    }
+                }else {
+                    noUser.setVisibility(View.GONE);
+                    //searchGrid.setAdapter(new SearchDisplayAdapter(getContext(),smodal1));
+                    adapter.filteredData(smodal1);
+                }
+
+                Log.i("Data",searchModalClass.size()+"");
             }
         });
 
@@ -82,23 +112,57 @@ public class SearchFragment extends Fragment {
     public void initViews(View view){
         searchValue=(EditText)view.findViewById(R.id.searchvalue);
         searchbtn=(ImageView)view.findViewById(R.id.search);
-        names=new ArrayList<String>();
-        uIds=new ArrayList<String>();
-        profile=new ArrayList<String>();
+        searchModalClass=new ArrayList<SearchModalClass>();
+        smodal1=new ArrayList<SearchModalClass>();
         searchGrid=(ListView) view.findViewById(R.id.searchList);
-
+        noUser=(TextView)view.findViewById(R.id.noUserFound);
     }
 
-    public void search(){
-        String query=searchValue.getText().toString();
-        names.clear();
-        uIds.clear();
-        profile.clear();
-        if(TextUtils.isEmpty(query)){
-            searchValue.requestFocus();
-        }else {
+//    public void search(){
+//        String query=searchValue.getText().toString();
+//        searchModalClass.clear();
+//        if(TextUtils.isEmpty(query)){
+//            searchValue.requestFocus();
+//        }else {
+//            try {
+//                Call<SearchUserResponseModel> call = GlobalClass.apiInterface.searchUser(query);
+//                call.enqueue(new Callback<SearchUserResponseModel>() {
+//                    @Override
+//                    public void onResponse(Call<SearchUserResponseModel> call, Response<SearchUserResponseModel> response) {
+//                        if (response.code() == 200) {
+//                            List<SearchDataModel> data=response.body().getMessage();
+//                            if(data.size()==0){
+//                                noUser.setVisibility(View.VISIBLE);
+//                                noUser.setText("No data found");
+//                                return;
+//                            }else {
+//                                noUser.setVisibility(View.GONE);
+//                            }
+//                            for(int i=0;i<data.size();i++){
+//                                searchModalClass.add(new SearchModalClass(data.get(i).getUserId(),data.get(i).getUserProfilePhoto(),data.get(i).getDisplayName()));
+//                            }
+//                            searchGrid.setAdapter(new SearchDisplayAdapter(getContext(),searchModalClass));
+//                        } else {
+//                            Toast.makeText(getContext(), "Problem", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<SearchUserResponseModel> call, Throwable t) {
+//                        Toast.makeText(getContext(), "Failure occurred " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }catch (Exception e){
+//                Toast.makeText(getContext(), "Exception occured "+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                Log.e("Exception",e.getMessage());
+//            }
+//        }
+//    }
+
+    public void getUsers(){
+        searchModalClass.clear();
             try {
-                Call<SearchUserResponseModel> call = GlobalClass.apiInterface.searchUser(query);
+                Call<SearchUserResponseModel> call = GlobalClass.apiInterface.searchUser("9");
                 call.enqueue(new Callback<SearchUserResponseModel>() {
                     @Override
                     public void onResponse(Call<SearchUserResponseModel> call, Response<SearchUserResponseModel> response) {
@@ -109,12 +173,10 @@ public class SearchFragment extends Fragment {
                                 return;
                             }
                             for(int i=0;i<data.size();i++){
-                                Log.v("Data ","Name : "+data.get(i).getDisplayName()+"\nEmail : "+data.get(i).getEmail());
-                                names.add(data.get(i).getDisplayName());
-                                uIds.add(data.get(i).getUserId());
-                                profile.add(data.get(i).getUserProfilePhoto());
+                                searchModalClass.add(new SearchModalClass(data.get(i).getUserId(),data.get(i).getUserProfilePhoto(),data.get(i).getDisplayName(),data.get(i).getEmail()));
                             }
-                            searchGrid.setAdapter(new SearchDisplayAdapter(getContext(),names,uIds,profile));
+                            adapter=new SearchDisplayAdapter(getContext(),smodal1);
+                            searchGrid.setAdapter(adapter);
                         } else {
                             Toast.makeText(getContext(), "Problem", Toast.LENGTH_SHORT).show();
                         }
@@ -130,6 +192,5 @@ public class SearchFragment extends Fragment {
                 Log.e("Exception",e.getMessage());
             }
         }
-    }
 
 }

@@ -27,11 +27,11 @@ public interface ApiInterface {
 
     @Multipart
     @POST("api/posts")
-    Call<getPostsResponseModel> postWithImage(@PartMap HashMap<String,RequestBody> requestBodyHashMap,@Part MultipartBody.Part file);
+    Call<AddPostResponse> postWithImage(@PartMap HashMap<String,RequestBody> requestBodyHashMap,@Part MultipartBody.Part file);
 
     @FormUrlEncoded
     @POST("api/posts")
-    Call<getPostsResponseModel> post(@Field("postType") String postType,
+    Call<AddPostResponse> post(@Field("postType") String postType,
                              @Field("postText") String postText,
                              @Field("userId") String userId,
                              @Field("privacy") Integer privacy);

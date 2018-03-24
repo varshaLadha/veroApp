@@ -36,8 +36,8 @@
                 android:layout_toEndOf="@+id/userpic"
                 android:layout_toRightOf="@+id/userpic"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"/>
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:id="@+id/postTime"
@@ -47,14 +47,15 @@
                 android:layout_toEndOf="@+id/userpic"
                 android:layout_toRightOf="@+id/userpic"
                 android:layout_marginTop="40dp"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"/>
+                android:textSize="13sp"
+                android:textColor="@android:color/black"/>
 
             <ImageView
                 android:id="@+id/addToFaviourate"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_alignParentEnd="true"
+                android:tint="@android:color/black"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="15dp"
@@ -78,13 +79,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/userData"
             android:layout_marginLeft="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="18sp"
+            android:textColor="@android:color/black" />
 
         <ImageView
         android:id="@+id/postpic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/postText"/>
 
@@ -100,16 +104,17 @@
                 android:id="@+id/commentcnt"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:textColor="@android:color/white"
+                android:layout_marginTop="18dp"
+                android:textColor="@android:color/black"
                 android:layout_marginLeft="10dp" />
 
             <ImageView
                 android:id="@+id/comment"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="18dp"
+                android:tint="@android:color/black"
                 android:layout_toEndOf="@id/commentcnt"
                 android:layout_toRightOf="@id/commentcnt"
                 android:src="@drawable/ic_chat" />
@@ -120,7 +125,8 @@
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:textColor="@android:color/white"
+                android:padding="5dp"
+                android:textColor="@android:color/black"
                 android:layout_toEndOf="@+id/comment"
                 android:layout_toRightOf="@id/commentcnt" />
 
@@ -128,8 +134,7 @@
                 android:id="@+id/like"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/likescnt"
                 android:layout_toRightOf="@+id/likescnt" />
         </RelativeLayout>
@@ -137,7 +142,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/white"
+        android:background="@android:color/black"
         android:layout_below="@+id/parent"></RelativeLayout>
 
 </RelativeLayout>

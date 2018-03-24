@@ -11,16 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lcom151_two.veroapp.GlobalClass;
 import com.example.lcom151_two.veroapp.LocalDatabase.DatabaseHandler;
-import com.example.lcom151_two.veroapp.LocalDatabase.FaviouratePosts;
 import com.example.lcom151_two.veroapp.R;
 import com.example.lcom151_two.veroapp.apiClasses.LikedPostsid;
 import com.example.lcom151_two.veroapp.apiClasses.PostsLikedResponseModel;
-import com.example.lcom151_two.veroapp.apiClasses.PostsModelClass;
-import com.example.lcom151_two.veroapp.fragments.FavouratePosts;
+import com.example.lcom151_two.veroapp.ModalClasses.PostsModelClass;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;

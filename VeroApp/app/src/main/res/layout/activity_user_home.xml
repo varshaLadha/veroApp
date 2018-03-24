@@ -6,19 +6,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.lcom151_two.veroapp.UserHome"
-    android:background="@drawable/background_splash">
+    android:background="#efefef">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-        <ImageView
-            android:id="@+id/background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/background_splash"/>
+        <!--<ImageView-->
+            <!--android:id="@+id/background"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:src="@drawable/background_splash"/>-->
 
         <FrameLayout
             android:id="@+id/frame_container"

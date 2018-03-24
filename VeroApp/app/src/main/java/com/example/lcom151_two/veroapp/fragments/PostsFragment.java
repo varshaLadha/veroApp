@@ -29,9 +29,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lcom151_two.veroapp.apiClasses.PostsModelClass;
+import com.example.lcom151_two.veroapp.ModalClasses.PostsModelClass;
 import com.example.lcom151_two.veroapp.R;
 import com.example.lcom151_two.veroapp.adapters.PostsDisplayAdapter1;
+import com.example.lcom151_two.veroapp.apiClasses.AddPostResponse;
 import com.example.lcom151_two.veroapp.apiClasses.ApiClient;
 import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
 import com.example.lcom151_two.veroapp.apiClasses.Message;
@@ -210,10 +211,10 @@ public class PostsFragment extends Fragment {
     }
 
     public void sendPost(String postType,String postText,String userId,Integer privacy){
-        Call<getPostsResponseModel> call=apiInterface.post(postType,postText,userId,privacy);
-        call.enqueue(new Callback<getPostsResponseModel>() {
+        Call<AddPostResponse> call=apiInterface.post(postType,postText,userId,privacy);
+        call.enqueue(new Callback<AddPostResponse>() {
             @Override
-            public void onResponse(Call<getPostsResponseModel> call, Response<getPostsResponseModel> response) {
+            public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
                 if(response.code()==200){
                     Toast.makeText(getContext(), "Post added successfully", Toast.LENGTH_SHORT).show();
                 }else {
@@ -223,8 +224,9 @@ public class PostsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<getPostsResponseModel> call, Throwable t) {
+            public void onFailure(Call<AddPostResponse> call, Throwable t) {
                 Toast.makeText(getContext(), "Failure occurred : "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.i("Failure occurred",t.getMessage());
             }
         });
     }
@@ -245,10 +247,10 @@ public class PostsFragment extends Fragment {
         requestBodyHashMap.put("userId",userId);
         requestBodyHashMap.put("privacy",privacy);
 
-        Call<getPostsResponseModel> call=apiInterface.postWithImage(requestBodyHashMap,body);
-        call.enqueue(new Callback<getPostsResponseModel>() {
+        Call<AddPostResponse> call=apiInterface.postWithImage(requestBodyHashMap,body);
+        call.enqueue(new Callback<AddPostResponse>() {
             @Override
-            public void onResponse(Call<getPostsResponseModel> call, Response<getPostsResponseModel> response) {
+            public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
                 if(response.code()==200){
                     Toast.makeText(getContext(), "Post added successfully", Toast.LENGTH_SHORT).show();
                     mediapath=null;
@@ -258,7 +260,7 @@ public class PostsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<getPostsResponseModel> call, Throwable t) {
+            public void onFailure(Call<AddPostResponse> call, Throwable t) {
                 Toast.makeText(getContext(), "Failure occurred : "+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

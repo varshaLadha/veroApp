@@ -1,6 +1,6 @@
 package com.example.lcom151_two.veroapp.LocalDatabase;
 
-import com.example.lcom151_two.veroapp.apiClasses.PostsModelClass;
+import com.example.lcom151_two.veroapp.ModalClasses.PostsModelClass;
 
 public class FaviouratePosts {
 

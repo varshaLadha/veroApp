@@ -25,7 +25,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:text="Profile Update"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textSize="20dp" />
 
             <!--<ImageView-->
@@ -57,7 +57,7 @@
                 android:layout_below="@+id/userpic"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/button_bg_stroke"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textAllCaps="false"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -69,8 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/selectpic"
                 android:layout_centerHorizontal="true"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
                 android:layout_marginTop="20dp"
                 android:hint="Enter display name"/>
 
@@ -90,8 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/displayname"
                 android:layout_centerHorizontal="true"
-                android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/black"
+                android:textColor="@android:color/black"
                 android:text="Available"/>
 
             <EditText
@@ -100,8 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/status"
                 android:layout_centerHorizontal="true"
-                android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/black"
+                android:textColor="@android:color/black"
                 android:hint="Enter username"/>
 
             <Button
@@ -112,7 +112,7 @@
                 android:layout_below="@+id/username"
                 android:background="@drawable/button_bg_stroke"
                 android:layout_marginTop="20dp"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="Update profile"/>

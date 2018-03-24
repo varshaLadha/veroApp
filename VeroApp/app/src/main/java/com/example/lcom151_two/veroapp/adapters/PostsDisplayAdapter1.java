@@ -22,10 +22,8 @@ import android.widget.Toast;
 import com.example.lcom151_two.veroapp.GlobalClass;
 import com.example.lcom151_two.veroapp.LocalDatabase.DatabaseHandler;
 import com.example.lcom151_two.veroapp.LocalDatabase.FaviouratePosts;
-import com.example.lcom151_two.veroapp.apiClasses.PostsModelClass;
+import com.example.lcom151_two.veroapp.ModalClasses.PostsModelClass;
 import com.example.lcom151_two.veroapp.R;
-import com.example.lcom151_two.veroapp.apiClasses.ApiClient;
-import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
 import com.example.lcom151_two.veroapp.apiClasses.CommentResponseModel;
 import com.example.lcom151_two.veroapp.apiClasses.LikedPostsid;
 import com.example.lcom151_two.veroapp.apiClasses.PostsLikedResponseModel;
@@ -246,7 +244,6 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
 
             Picasso.get()
                     .load(GlobalClass.posturl+postsData.get(position).getPostPic())
-                    .resize(width, height * 2 / 5)
                     .into(holder.postPic);
         }
 

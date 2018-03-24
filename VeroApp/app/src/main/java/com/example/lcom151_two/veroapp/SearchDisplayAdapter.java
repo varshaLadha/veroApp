@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lcom151_two.veroapp.ModalClasses.SearchModalClass;
 import com.example.lcom151_two.veroapp.apiClasses.*;
 import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
 import com.example.lcom151_two.veroapp.apiClasses.FollowingUserResponseModel;
@@ -29,17 +30,16 @@ import retrofit2.Response;
 public class SearchDisplayAdapter extends BaseAdapter{
 
     Context context;
-    ArrayList<String> username,fuserId,uids,profile;
+    ArrayList<SearchModalClass> searchModalClass;
+    ArrayList<String> fuserId;
     SharedPreferences sp;
     String userId;
     String object,name;
     UserDataModelClass udm;
 
-    public SearchDisplayAdapter(Context context, ArrayList<String> username,ArrayList<String> uids,ArrayList<String> profile){
+    public SearchDisplayAdapter(Context context, ArrayList<SearchModalClass> searchModalClass){
         this.context=context;
-        this.username=username;
-        this.uids=uids;
-        this.profile=profile;
+        this.searchModalClass=searchModalClass;
 
         sp=context.getSharedPreferences("mypref", Context.MODE_PRIVATE);
         userId=sp.getString("userId","");
@@ -48,7 +48,7 @@ public class SearchDisplayAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return username.size();
+        return searchModalClass.size();
     }
 
     @Override
@@ -87,24 +87,24 @@ public class SearchDisplayAdapter extends BaseAdapter{
                             fuserId.add(data.get(i).getFuserId());
                         }
                         try {
-                            if(!TextUtils.isEmpty(profile.get(position))) {
+                            if(!TextUtils.isEmpty(searchModalClass.get(position).getUserProfile())) {
                                 Picasso.get()
-                                        .load(GlobalClass.profileurl + profile.get(position))
+                                        .load(GlobalClass.profileurl + searchModalClass.get(position).getUserProfile())
                                         .into(userPic);
                             }else {
                                 userPic.setImageResource(R.drawable.user);
                             }
 
                             for (int i = 0; i < fuserId.size(); i++) {
-                                if (fuserId.get(i).equals(uids.get(position))) {
-                                    userDisplay.setText(username.get(position));
+                                if (fuserId.get(i).equals(searchModalClass.get(position).getUserId())) {
+                                    userDisplay.setText(searchModalClass.get(position).getDisplayName());
                                     follow.setText("Following");
                                     return;
-                                } else if (uids.get(position).equals(userId)) {
-                                    userDisplay.setText(username.get(position));
+                                } else if (searchModalClass.get(position).getUserId().equals(userId)) {
+                                    userDisplay.setText(searchModalClass.get(position).getDisplayName());
                                     follow.setVisibility(View.GONE);
                                 } else {
-                                    userDisplay.setText(username.get(position));
+                                    userDisplay.setText(searchModalClass.get(position).getDisplayName());
                                     follow.setText("Follow");
                                 }
                             }
@@ -126,7 +126,7 @@ public class SearchDisplayAdapter extends BaseAdapter{
                     if(follow.getText().equals("Following")){
 
                     }else {
-                        Call<responseModel> call1=GlobalClass.apiInterface.followUser(userId,uids.get(position));
+                        Call<responseModel> call1=GlobalClass.apiInterface.followUser(userId,searchModalClass.get(position).getUserId());
                         call1.enqueue(new Callback<responseModel>() {
                             @Override
                             public void onResponse(Call<responseModel> call, Response<responseModel> response) {
@@ -152,5 +152,10 @@ public class SearchDisplayAdapter extends BaseAdapter{
         }
 
         return convertView;
+    }
+
+    public void filteredData(ArrayList<SearchModalClass> smodal){
+        this.searchModalClass=smodal;
+        notifyDataSetChanged();
     }
 }

@@ -9,18 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lcom151_two.veroapp.LocalDatabase.DatabaseHandler;
 import com.example.lcom151_two.veroapp.LocalDatabase.FaviouratePosts;
 import com.example.lcom151_two.veroapp.R;
-import com.example.lcom151_two.veroapp.adapters.FavouratePostsAdapter;
 import com.example.lcom151_two.veroapp.adapters.PostsDisplayAdapter1;
-import com.example.lcom151_two.veroapp.apiClasses.PostsModelClass;
+import com.example.lcom151_two.veroapp.ModalClasses.PostsModelClass;
 
 import java.util.ArrayList;
 import java.util.List;
