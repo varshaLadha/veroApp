@@ -2,6 +2,8 @@ package com.example.lcom151_two.veroapp.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.example.lcom151_two.veroapp.LocalDatabase.DatabaseHandler;
 import com.example.lcom151_two.veroapp.LocalDatabase.FaviouratePosts;
 import com.example.lcom151_two.veroapp.R;
+import com.example.lcom151_two.veroapp.adapters.FavouratePostsAdapter;
 import com.example.lcom151_two.veroapp.adapters.PostsDisplayAdapter1;
 import com.example.lcom151_two.veroapp.ModalClasses.PostsModelClass;
 
@@ -26,7 +29,9 @@ public class FavouratePosts extends Fragment {
     DatabaseHandler db;
     ArrayList<PostsModelClass> postsModelClass;
     RecyclerView postView;
-    PostsDisplayAdapter1 adapter;
+    FavouratePostsAdapter adapter;
+    SharedPreferences sp;
+    String userId;
 
     Activity context;
     public FavouratePosts() {
@@ -57,7 +62,7 @@ public class FavouratePosts extends Fragment {
                 postsModelClass.add(new PostsModelClass(posts.get(i).getPostText(), posts.get(i).getPostTime(), posts.get(i).getPostPic(), posts.get(i).getUserProfile(), posts.get(i).getDisplayName(), posts.get(i).getComments(), posts.get(i).getLikescnt(), posts.get(i).getPostId()));
             }
 
-            adapter = new PostsDisplayAdapter1(getContext(), postsModelClass);
+            adapter = new FavouratePostsAdapter(getContext(), postsModelClass);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
             postView.setLayoutManager(layoutManager);
             postView.setAdapter(adapter);

@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import com.example.lcom151_two.veroapp.ModalClasses.SearchModalClass;
 import com.example.lcom151_two.veroapp.apiClasses.*;
 import com.example.lcom151_two.veroapp.apiClasses.ApiInterface;
 import com.example.lcom151_two.veroapp.apiClasses.FollowingUserResponseModel;
+import com.example.lcom151_two.veroapp.fragments.SearchFragment;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -36,11 +40,13 @@ public class SearchDisplayAdapter extends BaseAdapter{
     String userId;
     String object,name;
     UserDataModelClass udm;
+    PopupWindow window;
+    View view1;
+//    RelativeLayout layout;
 
     public SearchDisplayAdapter(Context context, ArrayList<SearchModalClass> searchModalClass){
         this.context=context;
         this.searchModalClass=searchModalClass;
-
         sp=context.getSharedPreferences("mypref", Context.MODE_PRIVATE);
         userId=sp.getString("userId","");
         fuserId=new ArrayList<String>();
@@ -139,10 +145,27 @@ public class SearchDisplayAdapter extends BaseAdapter{
 
                             @Override
                             public void onFailure(Call<responseModel> call, Throwable t) {
-                                Toast.makeText(context, "Failure occured : "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Failure occurred : "+t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
+                }
+            });
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SearchFragment fragment=new SearchFragment();
+                    String name=searchModalClass.get(position).getDisplayName();
+                    String email=searchModalClass.get(position).getEmail();
+                    String profile;
+                    if(!TextUtils.isEmpty(searchModalClass.get(position).getUserProfile())){
+                        profile=GlobalClass.profileurl+searchModalClass.get(position).getUserProfile();
+                    }else {
+                        profile=null;
+                    }
+                    fragment.displayUser(context,name,email,profile);
+                    //Toast.makeText(context, searchModalClass.get(position).getDisplayName()+" "+searchModalClass.get(position).getUserId()+" "+searchModalClass.get(position).getEmail()+" "+searchModalClass.get(position).getUserProfile(), Toast.LENGTH_SHORT).show();
                 }
             });
 

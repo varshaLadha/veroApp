@@ -3,11 +3,11 @@
     package="com.example.lcom151_two.veroapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.example.lcom151_two.veroapp.GlobalClass"
+        android:name=".GlobalClass"
         android:allowBackup="true"
         android:icon="@drawable/verologo"
         android:label="@string/app_name"
@@ -26,14 +26,20 @@
         <activity android:name=".Signup" />
         <activity android:name=".Otp" />
         <activity android:name=".timer" />
-        <activity android:name=".UserHome"
-            android:configChanges="orientation"></activity>
+        <activity
+            android:name=".UserHome"
+            android:configChanges="orientation" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8261ffc97b6d4d9e1baeb66b4295b43091a627b6" />
 
-        <activity android:name=".UserProfile"
-            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
+        <activity
+            android:name=".UserProfile"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".ImageDisplay" />
+        <activity android:name=".UpdatePost" />
+        <activity android:name=".AddPost"></activity>
     </application>
 
 </manifest>

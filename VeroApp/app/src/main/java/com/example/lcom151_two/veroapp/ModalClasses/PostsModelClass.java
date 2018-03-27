@@ -2,11 +2,24 @@ package com.example.lcom151_two.veroapp.ModalClasses;
 
 public class PostsModelClass {
 
-    String postText,postTime,postPic,userProfile,displayName;
+    String postText,postTime,postPic,userProfile,displayName,userId,postType;
     int postId,comments,likescnt;
 
     public PostsModelClass(){
 
+    }
+
+    public PostsModelClass(String postText,String postTime,String postPic,String userProfile,String displayName,int comments,int likescnt,int postId,String userId,String postType){
+        this.postText=postText;
+        this.postTime=postTime;
+        this.postPic=postPic;
+        this.userProfile=userProfile;
+        this.displayName=displayName;
+        this.comments=comments;
+        this.likescnt=likescnt;
+        this.postId=postId;
+        this.userId=userId;
+        this.postType=postType;
     }
 
     public PostsModelClass(String postText,String postTime,String postPic,String userProfile,String displayName,int comments,int likescnt,int postId){
@@ -82,5 +95,21 @@ public class PostsModelClass {
 
     public void setPostId(int postId) {
         this.postId = postId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getPostType() {
+        return postType;
+    }
+
+    public void setPostType(String postType) {
+        this.postType = postType;
     }
 }

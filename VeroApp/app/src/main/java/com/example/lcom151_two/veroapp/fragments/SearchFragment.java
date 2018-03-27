@@ -1,19 +1,30 @@
 package com.example.lcom151_two.veroapp.fragments;
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +38,7 @@ import com.example.lcom151_two.veroapp.apiClasses.SearchResponseModel;
 import com.example.lcom151_two.veroapp.apiClasses.SearchUserResponseModel;
 import com.example.lcom151_two.veroapp.apiClasses.searchData;
 import com.example.lcom151_two.veroapp.SearchDisplayAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +51,12 @@ public class SearchFragment extends Fragment {
 
     EditText searchValue;
     ImageView searchbtn;
-    ArrayList<SearchModalClass> searchModalClass,smodal1;
+    ArrayList<SearchModalClass> searchModalClass,smodal1,smodal;
     ListView searchGrid;
     TextView noUser;
     SearchDisplayAdapter adapter;
+    static FrameLayout layout;
+    PopupWindow window;
 
     public SearchFragment() {}
 
@@ -50,10 +64,20 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_search,null);
+        layout=view.findViewById(R.id.searchLayout);
 
         initViews(view);
 
         getUsers();
+
+        searchGrid.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchValue.getWindowToken(), 0);
+                return false;
+            }
+        });
 
         searchValue.addTextChangedListener(new TextWatcher() {
             @Override
@@ -71,7 +95,7 @@ public class SearchFragment extends Fragment {
 
                 String query=searchValue.getText().toString();
                 if(query.length()>0){
-                    ArrayList<SearchModalClass> smodal=new ArrayList<SearchModalClass>();
+                    smodal=new ArrayList<SearchModalClass>();
 
                     for(SearchModalClass sm : searchModalClass){
                         if(sm.getDisplayName().toLowerCase().contains(query) || sm.getUserId().contains(query) || sm.getEmail().toLowerCase().contains(query))
@@ -88,11 +112,8 @@ public class SearchFragment extends Fragment {
                     }
                 }else {
                     noUser.setVisibility(View.GONE);
-                    //searchGrid.setAdapter(new SearchDisplayAdapter(getContext(),smodal1));
                     adapter.filteredData(smodal1);
                 }
-
-                Log.i("Data",searchModalClass.size()+"");
             }
         });
 
@@ -118,46 +139,30 @@ public class SearchFragment extends Fragment {
         noUser=(TextView)view.findViewById(R.id.noUserFound);
     }
 
-//    public void search(){
-//        String query=searchValue.getText().toString();
-//        searchModalClass.clear();
-//        if(TextUtils.isEmpty(query)){
-//            searchValue.requestFocus();
-//        }else {
-//            try {
-//                Call<SearchUserResponseModel> call = GlobalClass.apiInterface.searchUser(query);
-//                call.enqueue(new Callback<SearchUserResponseModel>() {
-//                    @Override
-//                    public void onResponse(Call<SearchUserResponseModel> call, Response<SearchUserResponseModel> response) {
-//                        if (response.code() == 200) {
-//                            List<SearchDataModel> data=response.body().getMessage();
-//                            if(data.size()==0){
-//                                noUser.setVisibility(View.VISIBLE);
-//                                noUser.setText("No data found");
-//                                return;
-//                            }else {
-//                                noUser.setVisibility(View.GONE);
-//                            }
-//                            for(int i=0;i<data.size();i++){
-//                                searchModalClass.add(new SearchModalClass(data.get(i).getUserId(),data.get(i).getUserProfilePhoto(),data.get(i).getDisplayName()));
-//                            }
-//                            searchGrid.setAdapter(new SearchDisplayAdapter(getContext(),searchModalClass));
-//                        } else {
-//                            Toast.makeText(getContext(), "Problem", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<SearchUserResponseModel> call, Throwable t) {
-//                        Toast.makeText(getContext(), "Failure occurred " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }catch (Exception e){
-//                Toast.makeText(getContext(), "Exception occured "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                Log.e("Exception",e.getMessage());
-//            }
-//        }
-//    }
+    public static void displayUser(Context context,String name,String uemail,String profilePic)
+    {
+        PopupWindow window;
+        LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view=inflater.inflate(R.layout.userinfo,null);
+        window=new PopupWindow(view,ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
+        window.showAtLocation(layout, Gravity.CENTER,0,0);
+        TextView displayName,email;
+        ImageView iview;
+        displayName=view.findViewById(R.id.diasplayName);
+        email=view.findViewById(R.id.email);
+        iview=view.findViewById(R.id.userProfile);
+
+        displayName.setText(name);
+        email.setText(uemail);
+
+        if(profilePic==null){
+            iview.setImageResource(R.drawable.user);
+        }else {
+            Picasso.get()
+                    .load(profilePic)
+                    .into(iview);
+        }
+    }
 
     public void getUsers(){
         searchModalClass.clear();
@@ -193,4 +198,7 @@ public class SearchFragment extends Fragment {
             }
         }
 
+        public void viewUser(int position){
+            Log.i("User info",searchModalClass.get(position).getDisplayName()+" "+searchModalClass.get(position).getEmail());
+        }
 }

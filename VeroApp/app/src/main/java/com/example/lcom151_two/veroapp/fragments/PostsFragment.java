@@ -29,6 +29,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lcom151_two.veroapp.AddPost;
 import com.example.lcom151_two.veroapp.ModalClasses.PostsModelClass;
 import com.example.lcom151_two.veroapp.R;
 import com.example.lcom151_two.veroapp.adapters.PostsDisplayAdapter1;
@@ -65,7 +66,6 @@ public class PostsFragment extends Fragment {
     ImageView postpic;
     android.support.design.widget.CoordinatorLayout coordinatorLayout;
     int PICK_IMAGE_REQUEST = 111;
-    PostsModelClass postData;
     ArrayList<PostsModelClass> postsDataList;
 
     public static PostsFragment newInstance() {
@@ -143,7 +143,8 @@ public class PostsFragment extends Fragment {
                     List<Message> data=response.body().getMessage();
 
                     for(int i=0;i<data.size();i++){
-                        postsDataList.add(new PostsModelClass(data.get(i).getPostText(),data.get(i).getCreatedAt(),data.get(i).getPostUrl(),data.get(i).getUserProfilePhoto(),data.get(i).getDisplayName(),data.get(i).getComents(),data.get(i).getLikes(),data.get(i).getPostId()));
+                        postsDataList.add(new PostsModelClass(data.get(i).getPostText(),data.get(i).getCreatedAt(),data.get(i).getPostUrl(),data.get(i).getUserProfilePhoto(),data.get(i).getDisplayName(),data.get(i).getComents(),data.get(i).getLikes(),data.get(i).getPostId(),data.get(i).getUserId(),data.get(i).getPostType()));
+                        Log.i("postType",data.get(i).getPostType());
                     }
 
                     adapter=new PostsDisplayAdapter1(getContext(),postsDataList);
@@ -164,50 +165,54 @@ public class PostsFragment extends Fragment {
     }
 
     public void addPost(){
-        LayoutInflater inflater1=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view1=inflater1.inflate(R.layout.posts,null);
-        mediapath=null;
-        popupWindow=new PopupWindow(view1,ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
-        popupWindow.showAtLocation(coordinatorLayout, Gravity.CENTER,0,0);
-        Button submit=view1.findViewById(R.id.submitPost);
-        final EditText postText=view1.findViewById(R.id.postText);
-        final CheckBox privacy=view1.findViewById(R.id.privacy);
-        Button selectPic=view1.findViewById(R.id.selectpic);
-        postpic=(ImageView)view1.findViewById(R.id.postPic);
-        TextView title=view1.findViewById(R.id.title);
 
-        title.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-
-        selectPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent,"Select Image"),PICK_IMAGE_REQUEST);
-            }
-        });
-
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(privacy.isChecked()){
-                    p=1;
-                }else {
-                    p=0;
-                }
-                String postContent=postText.getText().toString();
-                if(TextUtils.isEmpty(postContent) && mediapath==null){
-                    Toast.makeText(getContext(), "Please enter data", Toast.LENGTH_SHORT).show();
-                }else if(mediapath==null){
-                    sendPost("text",postContent,userId,p);
-                }else if(TextUtils.isEmpty(postContent)){
-                    sendPostWithImage("image",postContent,userId,p);
-                }else {
-                    sendPostWithImage("text/img",postContent,userId,p);
-                }
-            }
-        });
+        Intent intent=new Intent(getContext(), AddPost.class);
+        startActivity(intent);
+        ((Activity)getContext()).finish();
+//        LayoutInflater inflater1=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        view1=inflater1.inflate(R.layout.posts,null);
+//        mediapath=null;
+//        popupWindow=new PopupWindow(view1,ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
+//        popupWindow.showAtLocation(coordinatorLayout, Gravity.CENTER,0,0);
+//        Button submit=view1.findViewById(R.id.submitPost);
+//        final EditText postText=view1.findViewById(R.id.postText);
+//        final CheckBox privacy=view1.findViewById(R.id.privacy);
+//        Button selectPic=view1.findViewById(R.id.selectpic);
+//        postpic=(ImageView)view1.findViewById(R.id.postPic);
+//        TextView title=view1.findViewById(R.id.title);
+//
+//        title.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+//
+//        selectPic.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_PICK);
+//                startActivityForResult(Intent.createChooser(intent,"Select Image"),PICK_IMAGE_REQUEST);
+//            }
+//        });
+//
+//        submit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(privacy.isChecked()){
+//                    p=1;
+//                }else {
+//                    p=0;
+//                }
+//                String postContent=postText.getText().toString();
+//                if(TextUtils.isEmpty(postContent) && mediapath==null){
+//                    Toast.makeText(getContext(), "Please enter data", Toast.LENGTH_SHORT).show();
+//                }else if(mediapath==null){
+//                    sendPost("text",postContent,userId,p);
+//                }else if(TextUtils.isEmpty(postContent)){
+//                    sendPostWithImage("image",postContent,userId,p);
+//                }else {
+//                    sendPostWithImage("text/img",postContent,userId,p);
+//                }
+//            }
+//        });
     }
 
     public void sendPost(String postType,String postText,String userId,Integer privacy){
@@ -217,6 +222,7 @@ public class PostsFragment extends Fragment {
             public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
                 if(response.code()==200){
                     Toast.makeText(getContext(), "Post added successfully", Toast.LENGTH_SHORT).show();
+                    //popupWindow.dismiss();
                 }else {
                     Toast.makeText(getContext(), response.code()+"", Toast.LENGTH_SHORT).show();
                     Toast.makeText(getContext(), "Post adding failed", Toast.LENGTH_SHORT).show();
@@ -254,6 +260,7 @@ public class PostsFragment extends Fragment {
                 if(response.code()==200){
                     Toast.makeText(getContext(), "Post added successfully", Toast.LENGTH_SHORT).show();
                     mediapath=null;
+                    //popupWindow.dismiss();
                 }else {
                     Toast.makeText(getContext(), "Post adding failed", Toast.LENGTH_SHORT).show();
                 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -85,5 +86,13 @@ public interface ApiInterface {
 
     @GET("api/search/{query}")
     Call<SearchUserResponseModel> searchUser(@Path("query") String query);
+
+    @DELETE("api/post/{postId}")
+    Call<UpdateDeletePostResponse> deletePost(@Path("postId") Integer postId);
+
+    @FormUrlEncoded
+    @POST("api/postUpdate")
+    Call<UpdateDeletePostResponse> updatePost(@Field("postText") String postText,
+                                              @Field("postId") Integer postId);
 
 }

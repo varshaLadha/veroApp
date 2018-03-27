@@ -1,30 +1,40 @@
 package com.example.lcom151_two.veroapp.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lcom151_two.veroapp.GlobalClass;
+import com.example.lcom151_two.veroapp.ImageDisplay;
 import com.example.lcom151_two.veroapp.LocalDatabase.DatabaseHandler;
 import com.example.lcom151_two.veroapp.LocalDatabase.FaviouratePosts;
 import com.example.lcom151_two.veroapp.ModalClasses.PostsModelClass;
 import com.example.lcom151_two.veroapp.R;
+import com.example.lcom151_two.veroapp.UpdatePost;
 import com.example.lcom151_two.veroapp.apiClasses.CommentResponseModel;
+import com.example.lcom151_two.veroapp.apiClasses.UpdateDeletePostResponse;
 import com.example.lcom151_two.veroapp.apiClasses.LikedPostsid;
 import com.example.lcom151_two.veroapp.apiClasses.PostsLikedResponseModel;
 import com.example.lcom151_two.veroapp.apiClasses.UserCommentPost;
@@ -71,6 +81,7 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView displayName, postContent, commentcnt, likescnt, postsTime;
+        public ImageButton options;
         public ImageView likePost, comment, postPic, addToFav, favPost, userpic;
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -85,6 +96,7 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
             userpic = itemView.findViewById(R.id.userpic);
             addToFav = itemView.findViewById(R.id.addToFaviourate);
             favPost=itemView.findViewById(R.id.faviouratePost);
+            options=itemView.findViewById(R.id.options);
             addToFav.setImageResource(R.drawable.ic_action_star_0);
         }
     }
@@ -101,13 +113,27 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
 
         displayData(position,holder);
 
+        holder.commentcnt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Comment section ","Post id "+postsData.get(position).getPostId());
+                commentsDisplay(position,holder);
+            }
+        });
+
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Comment section ","Post id "+postsData.get(position).getPostId());
+                commentsDisplay(position,holder);
+            }
+        });
         holder.addToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Post remove","Removing post from faviourate");
                 holder.addToFav.setVisibility(View.GONE);
                 holder.favPost.setVisibility(View.VISIBLE);
-                postsModelClass=new PostsModelClass(postsData.get(position).getPostText(),postsData.get(position).getPostTime(),postsData.get(position).getPostPic(),postsData.get(position).getUserProfile(),postsData.get(position).getDisplayName(),postsData.get(position).getComments(),postsData.get(position).getLikescnt(),postsData.get(position).getPostId());
+                postsModelClass=new PostsModelClass(postsData.get(position).getPostText(),postsData.get(position).getPostTime(),postsData.get(position).getPostPic(),postsData.get(position).getUserProfile(),postsData.get(position).getDisplayName(),postsData.get(position).getComments(),postsData.get(position).getLikescnt(),postsData.get(position).getPostId(),postsData.get(position).getUserId(),postsData.get(position).getPostType());
                 long success=db.addPost(new FaviouratePosts(postsModelClass));
                 if(success>0){
                     Toast.makeText(context, "Post added to faviourate ", Toast.LENGTH_SHORT).show();
@@ -123,13 +149,70 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
 
                 holder.favPost.setVisibility(View.GONE);
                 holder.addToFav.setVisibility(View.VISIBLE);
-                postsModelClass=new PostsModelClass(postsData.get(position).getPostText(),postsData.get(position).getPostTime(),postsData.get(position).getPostPic(),postsData.get(position).getUserProfile(),postsData.get(position).getDisplayName(),postsData.get(position).getComments(),postsData.get(position).getLikescnt(),postsData.get(position).getPostId());
+                postsModelClass=new PostsModelClass(postsData.get(position).getPostText(),postsData.get(position).getPostTime(),postsData.get(position).getPostPic(),postsData.get(position).getUserProfile(),postsData.get(position).getDisplayName(),postsData.get(position).getComments(),postsData.get(position).getLikescnt(),postsData.get(position).getPostId(),postsData.get(position).getUserId(),postsData.get(position).getPostType());
                 long success=db.deletePost(new FaviouratePosts(postsModelClass));
                 if(success>0){
                     Toast.makeText(context, "Post removed from faviourates", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(context, "Problem removing post", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        if(postsData.get(position).getUserId().equals(userId)){
+            holder.options.setVisibility(View.VISIBLE);
+        }else {
+            holder.options.setVisibility(View.GONE);
+        }
+
+        holder.options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PopupMenu menu=new PopupMenu(context,v);
+                menu.getMenuInflater().inflate(R.menu.postoptions,menu.getMenu());
+
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId())
+                        {
+                            case R.id.edit:
+                                Intent intent=new Intent(context, UpdatePost.class);
+                                intent.putExtra("content",postsData.get(position).getPostText());
+                                intent.putExtra("postId",postsData.get(position).getPostId());
+                                intent.putExtra("postType",postsData.get(position).getPostType());
+                                context.startActivity(intent);
+                                ((Activity)context).finish();
+                                break;
+                            case R.id.delete:
+                                Call<UpdateDeletePostResponse> call=GlobalClass.apiInterface.deletePost(postsData.get(position).getPostId());
+                                call.enqueue(new Callback<UpdateDeletePostResponse>() {
+                                    @Override
+                                    public void onResponse(Call<UpdateDeletePostResponse> call, Response<UpdateDeletePostResponse> response) {
+                                        if(response.code()==200){
+                                            Toast.makeText(context, "Post deleted successfuly", Toast.LENGTH_SHORT).show();
+                                            postsModelClass=new PostsModelClass(postsData.get(position).getPostText(),postsData.get(position).getPostTime(),postsData.get(position).getPostPic(),postsData.get(position).getUserProfile(),postsData.get(position).getDisplayName(),postsData.get(position).getComments(),postsData.get(position).getLikescnt(),postsData.get(position).getPostId(),postsData.get(position).getUserId(),postsData.get(position).getPostType());
+                                            long success=db.deletePost(new FaviouratePosts(postsModelClass));
+                                            postsData.remove(position);
+                                            notifyDataSetChanged();
+                                        }
+                                        else {
+                                            Toast.makeText(context, "Problem occurred", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<UpdateDeletePostResponse> call, Throwable t) {
+                                        Toast.makeText(context, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                        }
+                        return false;
+                    }
+                });
+
+                menu.show();
             }
         });
 
@@ -190,24 +273,10 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
         holder.likescnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("Like post id",postsData.get(position).getPostId()+"");
                 viewLikes(position);
             }
         });
-
-        holder.commentcnt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                commentsDisplay(position,holder);
-            }
-        });
-
-        holder.comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                commentsDisplay(position,holder);
-            }
-        });
-
     }
 
     @Override
@@ -215,8 +284,9 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
         return postsData.size();
     }
 
-    public void displayData(int position,MyViewHolder holder)
+    public void displayData(final int position, MyViewHolder holder)
     {
+
         postsModelClass=postsData.get(position);
         if (!TextUtils.isEmpty(postsData.get(position).getUserProfile())) {
             Picasso.get()
@@ -227,6 +297,31 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
         }
 
         holder.displayName.setText(postsData.get(position).getDisplayName());
+
+//        holder.displayName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                View view=inflater.inflate(R.layout.userinfo,null);
+//                BottomSheetDialog bottomSheetDialog=new BottomSheetDialog(context);
+//                TextView displayName,email;
+//                ImageView iview;
+//
+//                displayName=(TextView)view.findViewById(R.id.diasplayName);
+//                email=(TextView)view.findViewById(R.id.email);
+//                iview=(ImageView) view.findViewById(R.id.userProfile);
+//
+//                displayName.setText(postsData.get(position).getDisplayName());
+//                email.setText(postsData.get(position).getPostText());
+//                Picasso.get()
+//                        .load(GlobalClass.profileurl+postsData.get(position).getUserProfile())
+//                        .into(iview);
+//
+//                bottomSheetDialog.setContentView(view);
+//                bottomSheetDialog.show();
+//            }
+//        });
+
         if (postsData.get(position).getPostText() == "") {
             holder.postContent.setVisibility(View.GONE);
         } else {
@@ -260,6 +355,19 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
         } else {
             holder.postsTime.setText(new SimpleDateFormat("MMM dd yyyy hh:mm:ss a").format(date));
         }
+
+        holder.postPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(context, GlobalClass.posturl+postsData.get(position).getPostPic(), Toast.LENGTH_SHORT).show();
+                String url=GlobalClass.posturl+postsData.get(position).getPostPic();
+                Intent intent=new Intent(context, ImageDisplay.class);
+                intent.putExtra("imgurl",url);
+                String transition= context.getString(R.string.transition);
+                ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,v,transition);
+                ActivityCompat.startActivity(context,intent,options.toBundle());
+            }
+        });
     }
 
     public void likePost(int position,MyViewHolder holder){
@@ -284,6 +392,8 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
     }
 
     public void viewLikes(int position){
+        Log.i("Post id",postsData.get(position).getPostId()+"");
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View view = inflater.inflate(R.layout.usersnamelikedpost, null);
         final ListView listView = view.findViewById(R.id.displayUsername);
@@ -322,6 +432,8 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
         final Button send = (Button) view.findViewById(R.id.send);
         final EditText comment = (EditText) view.findViewById(R.id.postComment);
 
+        Log.v("Comment section ","Post id "+postsData.get(position).getPostId());
+
         Call<UserCommentPost> call1 = GlobalClass.apiInterface.comments(postsData.get(position).getPostId());
         call1.enqueue(new Callback<UserCommentPost>() {
             @Override
@@ -334,7 +446,6 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
                     TextView noComments=view.findViewById(R.id.noComments);
 
                     if (data.size() == 0) {
-                        //Toast.makeText(context, "No comments Yet", Toast.LENGTH_SHORT).show();
                         noComments.setVisibility(View.VISIBLE);
                     }
 
