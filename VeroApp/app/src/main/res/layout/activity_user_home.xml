@@ -51,14 +51,14 @@
             android:onClick="onClick"
             android:src="@drawable/search" />
 
-        <ImageButton
-            android:id="@+id/notifications"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/button_bg1"
-            android:onClick="onClick"
-            android:src="@drawable/ntoifications" />
+        <!--<ImageButton-->
+            <!--android:id="@+id/notifications"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/button_bg1"-->
+            <!--android:onClick="onClick"-->
+            <!--android:src="@drawable/ntoifications" />-->
 
         <ImageButton
             android:id="@+id/faviouratePosts"

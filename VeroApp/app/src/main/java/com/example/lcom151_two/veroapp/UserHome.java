@@ -40,7 +40,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
 
     public void initView(){
         posts=(ImageButton) findViewById(R.id.posts);
-        notification=(ImageButton) findViewById(R.id.notifications);
+        //notification=(ImageButton) findViewById(R.id.notifications);
         faviouratePosts=(ImageButton) findViewById(R.id.faviouratePosts);
         search=(ImageButton) findViewById(R.id.search);
         user=(ImageButton) findViewById(R.id.profile);
@@ -75,7 +75,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
         Fragment fragment;
         switch (v.getId()){
             case R.id.posts:
-                setFocused(R.drawable.posts_focused,R.drawable.search,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1);
+                setFocused(R.drawable.posts_focused,R.drawable.search,R.drawable.faviourate,R.drawable.user1);
 
                     ab.setTitle("Posts Feed");
                     fragment=new PostsFragment();
@@ -83,23 +83,23 @@ public class UserHome extends BaseClass implements View.OnClickListener{
                     break;
 
                 case R.id.search:
-                    setFocused(R.drawable.posts,R.drawable.search_focused,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1);
+                    setFocused(R.drawable.posts,R.drawable.search_focused,R.drawable.faviourate,R.drawable.user1);
 
                     ab.setTitle("Search Users");
                     fragment=new SearchFragment();
                     loadFragment(fragment);
                     break;
 
-                case R.id.notifications:
-                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications_focused,R.drawable.faviourate,R.drawable.user1);
-
-                    ab.setTitle("Notifications");
-                    fragment=new NotificationFragment();
-                    loadFragment(fragment);
-                    break;
+//                case R.id.notifications:
+//                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications_focused,R.drawable.faviourate,R.drawable.user1);
+//
+//                    ab.setTitle("Notifications");
+//                    fragment=new NotificationFragment();
+//                    loadFragment(fragment);
+//                    break;
 
                 case R.id.faviouratePosts:
-                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications,R.drawable.favoureat_focused,R.drawable.user1);
+                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.favoureat_focused,R.drawable.user1);
 
                     ab.setTitle("Favourite Posts");
                     fragment=new FavouratePosts();
@@ -107,7 +107,7 @@ public class UserHome extends BaseClass implements View.OnClickListener{
                     break;
 
                 case R.id.profile:
-                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.ntoifications,R.drawable.faviourate,R.drawable.user1_focused);
+                    setFocused(R.drawable.posts,R.drawable.search,R.drawable.faviourate,R.drawable.user1_focused);
 
                     ab.setTitle(udm.displayName);
                     fragment=new ProfileFragment();
@@ -116,10 +116,9 @@ public class UserHome extends BaseClass implements View.OnClickListener{
             }
     }
 
-    public void setFocused(int postDrawable,int searchDrawable,int notificationDrawable,int settingDrawable,int profileDrawable){
+    public void setFocused(int postDrawable,int searchDrawable,int settingDrawable,int profileDrawable){
         posts.setImageResource(postDrawable);
         search.setImageResource(searchDrawable);
-        notification.setImageResource(notificationDrawable);
         faviouratePosts.setImageResource(settingDrawable);
         user.setImageResource(profileDrawable);
     }
