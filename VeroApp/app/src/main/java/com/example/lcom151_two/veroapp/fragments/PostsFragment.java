@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -67,6 +68,7 @@ public class PostsFragment extends Fragment {
     android.support.design.widget.CoordinatorLayout coordinatorLayout;
     int PICK_IMAGE_REQUEST = 111;
     ArrayList<PostsModelClass> postsDataList;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public static PostsFragment newInstance() {
 
@@ -96,6 +98,13 @@ public class PostsFragment extends Fragment {
 
         getPosts();
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getPosts();
+            }
+        });
+
         return view;
     }
 
@@ -104,6 +113,8 @@ public class PostsFragment extends Fragment {
         posts=(RecyclerView) view.findViewById(R.id.postsGrid);
         coordinatorLayout=view.findViewById(R.id.coordinatelayout);
         fab=(FloatingActionButton)view.findViewById(R.id.fab);
+        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
+
         apiInterface= ApiClient.getClient().create(ApiInterface.class);
         userId=sp.getString("userId","");
         postsDataList=new ArrayList<PostsModelClass>();
@@ -135,6 +146,7 @@ public class PostsFragment extends Fragment {
 
     public void getPosts(){
 
+        postsDataList.clear();
         Call<getPostsResponseModel> call = apiInterface.getPosts(userId);
         call.enqueue(new Callback<getPostsResponseModel>() {
             @Override
@@ -151,6 +163,7 @@ public class PostsFragment extends Fragment {
                     RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity().getApplicationContext());
                     posts.setLayoutManager(layoutManager);
                     posts.setAdapter(adapter);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
                 else {
                     Toast.makeText(getContext(), "No data found", Toast.LENGTH_SHORT).show();

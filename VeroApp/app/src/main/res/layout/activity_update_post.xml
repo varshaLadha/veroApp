@@ -7,11 +7,23 @@
     tools:context="com.example.lcom151_two.veroapp.UpdatePost">
 
     <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="Post Update"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="18dp"/>
+
+    <TextView
         android:id="@+id/postText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/title"
         android:layout_marginTop="20dp"
         android:text="Post Text"/>
 

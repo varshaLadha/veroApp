@@ -1,12 +1,14 @@
 package com.example.lcom151_two.veroapp;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lcom151_two.veroapp.apiClasses.UpdateDeletePostResponse;
@@ -22,6 +24,7 @@ public class UpdatePost extends AppCompatActivity {
     Button update;
     String content,type;
     int id;
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +45,16 @@ public class UpdatePost extends AppCompatActivity {
     {
         postContent=(EditText)findViewById(R.id.postContent);
         update=(Button)findViewById(R.id.updatePost);
+        title=(TextView)findViewById(R.id.title);
 
         content=getIntent().getStringExtra("content");
         type=getIntent().getStringExtra("postType");
         id=getIntent().getIntExtra("postId",0);
 
         postContent.setText(content);
+        title.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        postContent.setMinimumWidth(500);
     }
 
     public void updatePost()
@@ -60,8 +67,6 @@ public class UpdatePost extends AppCompatActivity {
             }
 
         }
-
-        //Toast.makeText(this, newContent, Toast.LENGTH_SHORT).show();
 
         Call<UpdateDeletePostResponse> call=GlobalClass.apiInterface.updatePost(newContent,id);
         call.enqueue(new Callback<UpdateDeletePostResponse>() {
@@ -82,11 +87,6 @@ public class UpdatePost extends AppCompatActivity {
                 Toast.makeText(UpdatePost.this, "Failure occurred "+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
-//        Intent intent=new Intent(UpdatePost.this, UserHome.class);
-//        startActivity(intent);
-//        finish();
     }
 
     @Override

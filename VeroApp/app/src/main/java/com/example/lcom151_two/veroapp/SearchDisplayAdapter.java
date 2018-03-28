@@ -42,7 +42,6 @@ public class SearchDisplayAdapter extends BaseAdapter{
     UserDataModelClass udm;
     PopupWindow window;
     View view1;
-//    RelativeLayout layout;
 
     public SearchDisplayAdapter(Context context, ArrayList<SearchModalClass> searchModalClass){
         this.context=context;
@@ -126,31 +125,32 @@ public class SearchDisplayAdapter extends BaseAdapter{
                 }
             });
 
-            follow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(follow.getText().equals("Following")){
-
-                    }else {
-                        Call<responseModel> call1=GlobalClass.apiInterface.followUser(userId,searchModalClass.get(position).getUserId());
-                        call1.enqueue(new Callback<responseModel>() {
-                            @Override
-                            public void onResponse(Call<responseModel> call, Response<responseModel> response) {
-                                    if(response.body().getStatus()==1){
-                                        follow.setText("Following");
-                                    }else {
-                                        Toast.makeText(context, "Problem", Toast.LENGTH_SHORT).show();
-                                    }
-                            }
-
-                            @Override
-                            public void onFailure(Call<responseModel> call, Throwable t) {
-                                Toast.makeText(context, "Failure occurred : "+t.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-            });
+//            follow.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if(follow.getText().equals("Following")){
+//
+//                    }else {
+//                        //Call<responseModel> call1=GlobalClass.apiInterface.followUser(userId,searchModalClass.get(position).getUserId());
+//                        Call<responseModel> call1=GlobalClass.apiInterface.followUser(userId,searchModalClass.get(position).getUserId());
+//                        call1.enqueue(new Callback<responseModel>() {
+//                            @Override
+//                            public void onResponse(Call<responseModel> call, Response<responseModel> response) {
+//                                    if(response.code()==200){
+//                                        follow.setText("Following");
+//                                    }else {
+//                                        Toast.makeText(context, "Problem", Toast.LENGTH_SHORT).show();
+//                                    }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<responseModel> call, Throwable t) {
+//                                Toast.makeText(context, "Failure occurred : "+t.getMessage(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                }
+//            });
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,7 +165,6 @@ public class SearchDisplayAdapter extends BaseAdapter{
                         profile=null;
                     }
                     fragment.displayUser(context,name,email,profile);
-                    //Toast.makeText(context, searchModalClass.get(position).getDisplayName()+" "+searchModalClass.get(position).getUserId()+" "+searchModalClass.get(position).getEmail()+" "+searchModalClass.get(position).getUserProfile(), Toast.LENGTH_SHORT).show();
                 }
             });
 

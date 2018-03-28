@@ -461,7 +461,7 @@ public class PostsDisplayAdapter1 extends RecyclerView.Adapter<PostsDisplayAdapt
                     send.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (TextUtils.isEmpty(comment.getText().toString())) {
+                            if (TextUtils.isEmpty(comment.getText().toString().trim())) {
                                 Toast.makeText(context, "Please enter a comment", Toast.LENGTH_SHORT).show();
                             } else {
                                 Call<CommentResponseModel> call2 = GlobalClass.apiInterface.postComment(comment.getText().toString(), userId, postsData.get(position).getPostId());
