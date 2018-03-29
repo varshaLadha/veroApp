@@ -104,6 +104,7 @@ public class PostsFragment extends Fragment {
                 getPosts();
             }
         });
+        swipeRefreshLayout.setColorSchemeResources(R.color.orange,R.color.blue,R.color.green);
 
         return view;
     }
