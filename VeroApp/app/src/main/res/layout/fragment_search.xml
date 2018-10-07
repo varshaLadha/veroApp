@@ -1,0 +1,53 @@
+<FrameLayout
+    android:id="@+id/searchLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.lcom151_two.veroapp.fragments.SearchFragment">
+
+    <RelativeLayout
+        android:id="@+id/searchArea"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <TextView
+            android:id="@+id/noUserFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/searchvalue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:hint="Search by people or email"/>
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/search"
+            android:tint="@android:color/black"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/searchList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
+    </ListView>
+
+</FrameLayout>
